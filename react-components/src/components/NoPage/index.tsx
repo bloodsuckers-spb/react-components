@@ -1,7 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class NoPage extends Component {
-  render() {
-    return <div>404</div>;
-  }
-}
+const NoPage = () => <div>404</div>;
+
+export default NoPage;

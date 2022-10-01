@@ -1,14 +1,16 @@
 .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
-.cards-wrapper {
-  padding: 0 50px;
+.cards {
+  padding: 30px 50px;
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }

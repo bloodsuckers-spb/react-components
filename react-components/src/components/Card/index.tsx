@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './index.css';
 
-export default class Card extends Component {
-  render() {
-    return (
-      <div className="card">
-        <ul></ul>
-      </div>
-    );
-  }
-}
+const Card = () => {
+  return (
+    <div className="card">
+      <ul>
+        <li>there will be data from API...</li>
+      </ul>
+    </div>
+  );
+};
+
+export default Card;

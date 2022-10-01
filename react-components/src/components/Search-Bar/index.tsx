@@ -35,6 +35,8 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
           type="text"
           id="search-bar"
           placeholder="Search"
+          autoComplete="off"
+          autoFocus={true}
           value={searchValue}
           onChange={onChangeHandler}
         />
