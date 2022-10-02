@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <main className="main">
       <SearchBar />
-      <ul className="cards">
+      <ul className="cards" role="cards-list">
         {array.map((card, i) => (
           <li key={i}>{card}</li>
         ))}

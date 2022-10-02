@@ -10,13 +10,13 @@ const Navigation = () => {
     <nav className="nav">
       <ul className="nav-list">
         <li>
-          <NavLink end to="/" className={setNavDataStatus}>
+          <NavLink end to="/" className={setNavDataStatus} role="link" aria-current="true">
             Home
           </NavLink>
         </li>
         <li>
-          <NavLink to="/about" className={setNavDataStatus}>
-            About Us
+          <NavLink to="/about" className={setNavDataStatus} role="link" aria-current="false">
+            About
           </NavLink>
         </li>
       </ul>

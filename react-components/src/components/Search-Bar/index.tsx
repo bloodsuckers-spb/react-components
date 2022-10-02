@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LocalStorageService from 'utils/LocalStorageService';
 
 import { SearchBarProps } from 'types/SearchBarProps';
 import SearchBarState from 'types/SearchBarState';
@@ -8,13 +7,13 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
   constructor(props: SearchBarProps) {
     super(props);
     this.state = {
-      searchValue: LocalStorageService.getItem('searchValue') || '',
+      searchValue: localStorage.getItem('searchValue') || '',
     };
   }
 
   componentWillUnmount() {
     const { searchValue } = this.state;
-    LocalStorageService.setItem('searchValue', searchValue);
+    localStorage.setItem('searchValue', searchValue);
   }
 
   render() {
@@ -22,9 +21,6 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.currentTarget;
       this.setState({ searchValue: value });
-    };
-    const submitHandler = (e: React.SyntheticEvent) => {
-      e.preventDefault();
     };
     return (
       <form action="/" method="get">
@@ -40,7 +36,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
           value={searchValue}
           onChange={onChangeHandler}
         />
-        <button type="submit" onClick={submitHandler}>
+        <button type="submit" disabled>
           Search
         </button>
       </form>
