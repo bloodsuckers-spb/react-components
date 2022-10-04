@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-
-import { SearchBarProps } from 'types/SearchBarProps';
-import SearchBarState from 'types/SearchBarState';
+import { SearchBarProps, SearchBarState } from './interfaces';
 
 export default class SearchBar extends Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
