@@ -2,10 +2,10 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import Header from 'components/App-Header';
-import Home from 'components/Home';
-import About from 'components/About-Us';
-import NoPage from 'components/NoPage';
+import Header from 'components/AppHeader';
+import Home from 'pages/Home';
+import About from 'pages/AboutUs';
+import NoPage from 'pages/NoPage';
 
 function App() {
   return (
