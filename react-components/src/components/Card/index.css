@@ -1,8 +1,9 @@
 .card {
   padding: 10px;
-  width: 150px;
-  height: 300px;
-  border-radius: 9px;
+  width: 270px;
+  min-height: 434px;
+  border-radius: 10px;
+  gap: 10px;
   transition: all 0.55s ease-in-out;
   animation-duration: 0.55s;
   animation-fill-mode: both;
@@ -17,4 +18,13 @@
 .card:hover {
   cursor: pointer;
   background-color: #f0eaea;
+}
+
+.breed {
+  font-style: italic;
+}
+
+.card-img {
+  width: 270px;
+  height: 270px;
 }

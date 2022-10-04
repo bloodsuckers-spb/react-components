@@ -2,15 +2,15 @@ import React from 'react';
 import SearchBar from '../../components/SearchBar';
 import Card from 'components/Card';
 import './index.css';
+import { data } from '../../constants/data';
 
 const Home = () => {
-  const array = Array(5).fill(<Card />);
   return (
     <main className="main">
       <SearchBar />
       <ul className="cards" role="cards-list">
-        {array.map((card, i) => (
-          <li key={i}>{card}</li>
+        {data.map((data, i) => (
+          <li key={i}>{<Card data={data} />}</li>
         ))}
       </ul>
     </main>
