@@ -1,24 +1,15 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import './index.css';
-
-import INavData from 'types/INavData';
+import { navLinkData } from 'constants/navLinkData';
+import NavItem from 'components/NavItem';
 
 const Navigation = () => {
-  const setNavDataStatus = (navData: INavData) => `nav__link ${navData.isActive && ' active'}`;
   return (
     <nav className="nav">
       <ul className="nav-list">
-        <li>
-          <NavLink end to="/" className={setNavDataStatus} role="link" aria-current="true">
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/about" className={setNavDataStatus} role="link" aria-current="false">
-            About
-          </NavLink>
-        </li>
+        {navLinkData.map((data, i) => (
+          <NavItem key={i} data={data} />
+        ))}
       </ul>
     </nav>
   );

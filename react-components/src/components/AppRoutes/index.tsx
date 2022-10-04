@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppRoutesProps from './interface';
 
-function AppRoutes({ routes }: AppRoutesProps) {
+const AppRoutes = ({ routes }: AppRoutesProps) => {
   return (
     <Routes>
       {routes.map((route, i) => (
@@ -10,6 +10,6 @@ function AppRoutes({ routes }: AppRoutesProps) {
       ))}
     </Routes>
   );
-}
+};
 
 export default AppRoutes;
