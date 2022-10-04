@@ -1,21 +1,17 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
-import Header from 'components/AppHeader';
-import Home from 'pages/Home';
-import About from 'pages/AboutUs';
-import NoPage from 'pages/NoPage';
+import AppRoutes from 'components/AppRoutes';
+import AppHeader from 'components/AppHeader';
+
+import { routes } from './constants/routes';
 
 function App() {
   return (
     <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="about" element={<About />} />
-        <Route path="*" element={<NoPage />} />
-      </Routes>
+      <AppHeader />
+      <AppRoutes routes={routes} />
     </BrowserRouter>
   );
 }
