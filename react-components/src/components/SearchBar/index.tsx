@@ -14,6 +14,11 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
     localStorage.setItem('searchValue', searchValue);
   }
 
+  handleClick = () => {
+    const { searchValue } = this.state;
+    localStorage.setItem('searchValue', searchValue);
+  };
+
   render() {
     const { searchValue } = this.state;
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,7 +39,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
           value={searchValue}
           onChange={onChangeHandler}
         />
-        <button type="submit" disabled>
+        <button type="button" onClick={this.handleClick}>
           Search
         </button>
       </form>
