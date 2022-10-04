@@ -10,7 +10,7 @@ test('render Cards', () => {
     expect(card).toBeInTheDocument();
     counter += 1;
   });
-  expect(counter).toBe(5);
+  expect(counter).toBe(8);
   render(<Home />);
   const arrayOfcards = screen.getAllByRole('card');
   expect(arrayOfcards.length).toBeGreaterThan(counter);

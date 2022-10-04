@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Card from '.';
+import { data } from '../../constants/data';
 
-// test('renders learn react link', () => {
-//   render(<Card />);
-//   const linkElement = screen.getByText(/there will be data from API/i);
-//   expect(linkElement).toBeInTheDocument();
-// });
+test('render card', () => {
+  render(<Card data={data[1]} />);
+  const linkElement = screen.getByText(/Shih tzu/i);
+  expect(linkElement).toBeInTheDocument();
+});
