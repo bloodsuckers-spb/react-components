@@ -16,4 +16,12 @@ export const navLinkData = [
     },
     content: 'About',
   },
+  {
+    attributes: {
+      to: '/forms',
+      role: 'link',
+      className: 'nav__link',
+    },
+    content: 'Forms',
+  },
 ];
