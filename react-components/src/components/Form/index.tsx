@@ -1,14 +1,24 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-
-type refInput = React.RefObject<HTMLInputElement>;
-type refSelect = React.RefObject<HTMLSelectElement>;
-
-type FormProps = Record<string, never>;
+import { countries, textInputProp, FormProps } from './interfaces';
+import { refInput, refSelect } from './interfaces';
+import TextInput from '../TextInput';
+import SelectOptions from '../SelectOption';
 
 interface FormState {
   isDisabled: boolean;
 }
+
+const textInputProps: textInputProp[] = [
+  {
+    content: 'First Name:',
+    id: 'firstName',
+  },
+  {
+    content: 'Last Name:',
+    id: 'lastName',
+  },
+];
 
 export default class Form extends Component<FormProps, FormState> {
   private firstName: refInput = React.createRef();
@@ -16,7 +26,8 @@ export default class Form extends Component<FormProps, FormState> {
   private birthday: refInput = React.createRef();
   private country: refSelect = React.createRef();
   private fileUpload: refInput = React.createRef();
-  constructor(props = {}) {
+  private selectOptions: Readonly<string[]> = Object.values(countries);
+  constructor(props: FormProps) {
     super(props);
     this.state = {
       isDisabled: true,
@@ -28,11 +39,10 @@ export default class Form extends Component<FormProps, FormState> {
     this.setState({ isDisabled: !isDisabled });
   };
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    if (value.length > 2) {
-      this.changeDisabledStatus();
-    }
+  // event: React.FormEvent<HTMLInputElement>
+
+  handleChange = () => {
+    console.log(this.firstName.current?.value);
   };
 
   handleSubmit = (event: FormEvent) => {
@@ -43,27 +53,15 @@ export default class Form extends Component<FormProps, FormState> {
     const { isDisabled } = this.state;
     return (
       <form className="form" onSubmit={this.handleSubmit}>
-        <label htmlFor="firstName">First Name:</label>
-        <input id="firstName" type="text" ref={this.firstName} onChange={this.handleChange} />
-        <label htmlFor="lastName">Last Name:</label>
-        <input
-          id="lastName"
-          type="text"
-          autoComplete="off"
-          ref={this.lastName}
-          onChange={this.handleChange}
-        />
-        <label htmlFor="date-picker">Your Birthday:</label>
-        <input type="date" id="date-picker" ref={this.birthday} />
-        <label htmlFor="select">Country:</label>
-        <select id="select" ref={this.country}>
-          <option value="grapefruit">USA</option>
-          <option value="lime">Germany</option>
-          <option defaultValue="coconut">England</option>
-          <option value="mango">Sweden</option>
+        {textInputProps.map((item, i) => {
+          const ref = !i ? this.firstName : this.lastName;
+          return <TextInput key={i} data={item} refer={ref} fn={this.handleChange} />;
+        })}
+        <select>
+          {this.selectOptions.map((country, i) => (
+            <SelectOptions key={i} country={country} />
+          ))}
         </select>
-        <label htmlFor="file-input">Upload file:</label>
-        <input id="file-input" type="file" ref={this.fileUpload} />
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
     );
