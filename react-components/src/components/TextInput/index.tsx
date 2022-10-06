@@ -8,10 +8,11 @@ interface textInputProp {
 interface TextInputProps {
   data: textInputProp;
   refer: React.RefObject<HTMLInputElement>;
+  error: string;
   fn: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-const TextInput = ({ data, refer, fn }: TextInputProps) => {
+const TextInput = ({ data, error, refer, fn }: TextInputProps) => {
   const { content, id } = data;
   const options = {
     type: 'text',
@@ -21,6 +22,7 @@ const TextInput = ({ data, refer, fn }: TextInputProps) => {
     <>
       <label htmlFor={id}>{content}</label>
       <input {...options} id={id} ref={refer} onChange={fn} />
+      <p className="error">{error}</p>
     </>
   );
 };

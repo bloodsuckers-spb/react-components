@@ -1,36 +1,28 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { countries, textInputProp, FormProps } from './interfaces';
+import { countries, FormProps, FormState, ErrorsKey } from './interfaces';
 import { refInput, refSelect } from './interfaces';
 import TextInput from '../TextInput';
 import SelectOptions from '../SelectOption';
-
-interface FormState {
-  isDisabled: boolean;
-}
-
-const textInputProps: textInputProp[] = [
-  {
-    content: 'First Name:',
-    id: 'firstName',
-  },
-  {
-    content: 'Last Name:',
-    id: 'lastName',
-  },
-];
+import { textInputProps } from '../../constants/textInputProps';
 
 export default class Form extends Component<FormProps, FormState> {
-  private firstName: refInput = React.createRef();
-  private lastName: refInput = React.createRef();
-  private birthday: refInput = React.createRef();
+  private readonly firstName: refInput = React.createRef();
+  private readonly lastName: refInput = React.createRef();
+  // private birthday: refInput = React.createRef();
   private country: refSelect = React.createRef();
-  private fileUpload: refInput = React.createRef();
+  // private fileUpload: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
+  private isErrors = false;
+  private isValidated = false;
   constructor(props: FormProps) {
     super(props);
     this.state = {
       isDisabled: true,
+      errors: {
+        firstName: '',
+        lastName: '',
+      },
     };
   }
 
@@ -39,14 +31,43 @@ export default class Form extends Component<FormProps, FormState> {
     this.setState({ isDisabled: !isDisabled });
   };
 
-  // event: React.FormEvent<HTMLInputElement>
+  changeErrorMsg = (key: ErrorsKey, errMsg: string) => {
+    const { errors } = this.state;
+    errors[key] = errMsg;
+    this.setState({ errors: errors });
+  };
 
-  handleChange = () => {
-    console.log(this.firstName.current?.value);
+  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const { isValidated } = this;
+    const { isDisabled } = this.state;
+    if (!isValidated && isDisabled) {
+      this.changeDisabledStatus();
+    } else {
+      const { currentTarget } = event;
+      this.changeErrorMsg('firstName', '');
+      currentTarget.style.border = '1px solid transparent';
+    }
   };
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+    this.isValidated = true;
+    const { validateTextInput } = this;
+    validateTextInput('firstName').validateTextInput('lastName');
+  };
+
+  validateTextInput = (key: 'firstName' | 'lastName') => {
+    const node = this[key].current;
+    if (node) {
+      const { value } = node;
+      if (value.length < 3 || !/[A-Z]/.test(value)) {
+        this.changeErrorMsg(key, `${key} is incorrect`);
+        node.style.border = '1px solid red';
+      } else {
+        this.changeErrorMsg(key, ``);
+      }
+    }
+    return this;
   };
 
   render() {
@@ -55,7 +76,9 @@ export default class Form extends Component<FormProps, FormState> {
       <form className="form" onSubmit={this.handleSubmit}>
         {textInputProps.map((item, i) => {
           const ref = !i ? this.firstName : this.lastName;
-          return <TextInput key={i} data={item} refer={ref} fn={this.handleChange} />;
+          const { firstName, lastName } = this.state.errors;
+          const error = !i ? firstName : lastName;
+          return <TextInput key={i} data={item} refer={ref} error={error} fn={this.handleChange} />;
         })}
         <select>
           {this.selectOptions.map((country, i) => (
