@@ -15,6 +15,7 @@ export interface IErrors {
   firstName: string;
   lastName: string;
   country: string;
+  birthday: string;
 }
 
 export type ErrorsKey = keyof IErrors;
