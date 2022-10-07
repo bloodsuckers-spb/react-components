@@ -2,9 +2,8 @@ import React, { Component, FormEvent } from 'react';
 import './index.css';
 import { countries, FormProps, FormState, ErrorsKey, IErrors } from './interfaces';
 import { refInput, refSelect } from './interfaces';
-import TextInput from '../TextInput';
 import SelectOptions from '../SelectOption';
-import { textInputProps } from '../../constants/textInputProps';
+import FormInput from '../FormInput';
 
 export default class Form extends Component<FormProps, FormState> {
   private readonly firstName: refInput = React.createRef();
@@ -37,6 +36,7 @@ export default class Form extends Component<FormProps, FormState> {
       firstName: this.firstName.current?.value || '',
       lastName: this.lastName.current?.value || '',
       country: this.country.current?.value || '',
+      birthday: this.birthday.current?.value || '',
     };
     this.addCard(formData);
   };
@@ -49,7 +49,6 @@ export default class Form extends Component<FormProps, FormState> {
 
   handleChange = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { isDisabled } = this.state;
-    console.log(event.currentTarget.value);
     if (!this.hasErrors && isDisabled) {
       this.setState({ isDisabled: false });
     }
@@ -110,10 +109,9 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   validateDate = () => {
-    console.log(this.birthday.current);
     if (this.birthday.current) {
       const { value } = this.birthday.current;
-      if (!/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value)) {
+      if (!/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value) || Date.now() - Date.parse(value) < 0) {
         this.changeErrorMsg('birthday', `incorrect date`);
         this.birthday.current.style.border = '1px solid red';
       } else {
@@ -124,17 +122,38 @@ export default class Form extends Component<FormProps, FormState> {
 
   render() {
     const { isDisabled } = this.state;
+    const formItems = [
+      {
+        title: 'First Name:',
+        id: 'firstName',
+        type: 'text',
+        errorMsg: this.state.errors.firstName,
+        ref: this.firstName,
+        handler: this.handleChange,
+      },
+      {
+        title: 'Last Name:',
+        id: 'lastName',
+        type: 'text',
+        errorMsg: this.state.errors.lastName,
+        ref: this.lastName,
+        handler: this.handleChange,
+      },
+
+      {
+        title: 'Your birthday:',
+        id: 'birthday',
+        type: 'date',
+        errorMsg: this.state.errors.birthday,
+        ref: this.birthday,
+        handler: this.handleChange,
+      },
+    ];
     return (
       <form className="form" onSubmit={this.handleSubmit}>
-        {textInputProps.map((item, i) => {
-          const ref = !i ? this.firstName : this.lastName;
-          const { firstName, lastName } = this.state.errors;
-          const error = !i ? firstName : lastName;
-          return <TextInput key={i} data={item} refer={ref} error={error} fn={this.handleChange} />;
-        })}
-        <label htmlFor="birthday">Your birthday:</label>
-        <input id="birthday" type="date" onChange={this.handleChange} ref={this.birthday} />
-        <p className="error">{this.state.errors.birthday}</p>
+        {formItems.map((data, i) => (
+          <FormInput key={i} data={data} />
+        ))}
         <label htmlFor="country">Your country:</label>
         <select id="country" ref={this.country} onChange={this.handleChange}>
           <option value="">-- Choose city --</option>
