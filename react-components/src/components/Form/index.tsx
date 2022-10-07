@@ -13,7 +13,7 @@ export default class Form extends Component<FormProps, FormState> {
   private readonly country: refSelect = React.createRef();
   // private fileUpload: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
-  // private isErrors = false;
+  private addCard;
   constructor(props: FormProps) {
     super(props);
     this.state = {
@@ -24,11 +24,21 @@ export default class Form extends Component<FormProps, FormState> {
         country: '',
       },
     };
+    this.addCard = props.fn;
   }
 
   get hasErrors() {
     return !!Object.values(this.state.errors).join('').length;
   }
+
+  createCard = () => {
+    const formData = {
+      firstName: this.firstName.current?.value || '',
+      lastName: this.lastName.current?.value || '',
+      country: this.country.current?.value || '',
+    };
+    this.addCard(formData);
+  };
 
   changeErrorMsg = (key: ErrorsKey, errMsg: string) => {
     const { errors } = this.state;
@@ -66,7 +76,7 @@ export default class Form extends Component<FormProps, FormState> {
     validateTextInput('firstName').validateTextInput('lastName').validateSelect();
     const isErrors = this.hasErrors;
     if (!isErrors) {
-      this.addCard();
+      this.createCard();
     } else {
       this.setState({ isDisabled: true });
     }
@@ -94,10 +104,6 @@ export default class Form extends Component<FormProps, FormState> {
         node.style.border = '1px solid red';
       }
     }
-  };
-
-  addCard = () => {
-    console.log('addCard');
   };
 
   render() {

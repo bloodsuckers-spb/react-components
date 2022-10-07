@@ -1,3 +1,5 @@
+import { ICards } from 'pages/Forms/interfaces';
+
 export enum countries {
   USA = 'USA',
   Germany = 'Germany',
@@ -5,7 +7,9 @@ export enum countries {
   Sweden = 'Sweden',
 }
 
-export type FormProps = Record<string, never>;
+export interface FormProps {
+  fn: (data: ICards) => void;
+}
 
 export interface IErrors {
   firstName: string;
