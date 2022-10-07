@@ -10,7 +10,7 @@ export default class Form extends Component<FormProps, FormState> {
   private readonly firstName: refInput = React.createRef();
   private readonly lastName: refInput = React.createRef();
   // private birthday: refInput = React.createRef();
-  private country: refSelect = React.createRef();
+  private readonly country: refSelect = React.createRef();
   // private fileUpload: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
   // private isErrors = false;
@@ -61,7 +61,7 @@ export default class Form extends Component<FormProps, FormState> {
 
   validate = () => {
     const { validateTextInput } = this;
-    validateTextInput('firstName').validateTextInput('lastName');
+    validateTextInput('firstName').validateTextInput('lastName').validateSelect();
     const isErrors = this.hasErrors;
     if (!isErrors) {
       this.addCard();
@@ -84,6 +84,13 @@ export default class Form extends Component<FormProps, FormState> {
     return this;
   };
 
+  validateSelect = () => {
+    const node = this.country;
+    if (node) {
+      console.log(this.country.current?.value);
+    }
+  };
+
   addCard = () => {
     console.log('addCard');
   };
@@ -98,7 +105,7 @@ export default class Form extends Component<FormProps, FormState> {
           const error = !i ? firstName : lastName;
           return <TextInput key={i} data={item} refer={ref} error={error} fn={this.handleChange} />;
         })}
-        <select>
+        <select ref={this.country}>
           {this.selectOptions.map((country, i) => (
             <SelectOptions key={i} country={country} />
           ))}
