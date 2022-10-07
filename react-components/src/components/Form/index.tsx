@@ -14,7 +14,6 @@ export default class Form extends Component<FormProps, FormState> {
   // private fileUpload: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
   private isErrors = false;
-  private isValidated = false;
   constructor(props: FormProps) {
     super(props);
     this.state = {
@@ -26,11 +25,6 @@ export default class Form extends Component<FormProps, FormState> {
     };
   }
 
-  changeDisabledStatus = () => {
-    const { isDisabled } = this.state;
-    this.setState({ isDisabled: !isDisabled });
-  };
-
   changeErrorMsg = (key: ErrorsKey, errMsg: string) => {
     const { errors } = this.state;
     errors[key] = errMsg;
@@ -38,10 +32,10 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { isValidated } = this;
+    const { isErrors } = this;
     const { isDisabled } = this.state;
-    if (!isValidated && isDisabled) {
-      this.changeDisabledStatus();
+    if (!isErrors && isDisabled) {
+      this.setState({ isDisabled: false });
     } else {
       const { currentTarget } = event;
       this.changeErrorMsg('firstName', '');
@@ -51,16 +45,22 @@ export default class Form extends Component<FormProps, FormState> {
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    this.isValidated = true;
+    this.isErrors = false;
     const { validateTextInput } = this;
     validateTextInput('firstName').validateTextInput('lastName');
+    if (!this.isErrors) {
+      this.addCard();
+    } else {
+      this.setState({ isDisabled: true });
+    }
   };
 
   validateTextInput = (key: 'firstName' | 'lastName') => {
     const node = this[key].current;
     if (node) {
       const { value } = node;
-      if (value.length < 3 || !/[A-Z]/.test(value)) {
+      if (value.length < 3 || !/^[A-Z][a-z]+|[А-Я][а-я]+$/.test(value)) {
+        this.isErrors = true;
         this.changeErrorMsg(key, `${key} is incorrect`);
         node.style.border = '1px solid red';
       } else {
@@ -68,6 +68,10 @@ export default class Form extends Component<FormProps, FormState> {
       }
     }
     return this;
+  };
+
+  addCard = () => {
+    console.log('addCard');
   };
 
   render() {
