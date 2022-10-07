@@ -21,6 +21,7 @@ export default class Form extends Component<FormProps, FormState> {
       errors: {
         firstName: '',
         lastName: '',
+        country: '',
       },
     };
   }
@@ -35,7 +36,7 @@ export default class Form extends Component<FormProps, FormState> {
     this.setState({ errors: errors });
   };
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+  handleChange = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { isDisabled } = this.state;
 
     if (!this.hasErrors && isDisabled) {
@@ -45,6 +46,7 @@ export default class Form extends Component<FormProps, FormState> {
     if (this.hasErrors) {
       const { currentTarget } = event;
       const id = currentTarget.id.trim() as keyof IErrors;
+      console.log(id);
       this.changeErrorMsg(id, '');
       currentTarget.style.border = '1px solid transparent';
     }
@@ -85,9 +87,12 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   validateSelect = () => {
-    const node = this.country;
-    if (node) {
-      console.log(this.country.current?.value);
+    if (this.country.current) {
+      const node = this.country.current;
+      if (!node?.value) {
+        this.changeErrorMsg('country', `Please choose country`);
+        node.style.border = '1px solid red';
+      }
     }
   };
 
@@ -105,11 +110,13 @@ export default class Form extends Component<FormProps, FormState> {
           const error = !i ? firstName : lastName;
           return <TextInput key={i} data={item} refer={ref} error={error} fn={this.handleChange} />;
         })}
-        <select ref={this.country}>
+        <select id="country" ref={this.country} onChange={this.handleChange}>
+          <option value="">-- Choose city --</option>
           {this.selectOptions.map((country, i) => (
             <SelectOptions key={i} country={country} />
           ))}
         </select>
+        <p className="error">{this.state.errors.country}</p>
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
     );

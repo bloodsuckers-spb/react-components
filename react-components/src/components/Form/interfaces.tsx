@@ -10,6 +10,7 @@ export type FormProps = Record<string, never>;
 export interface IErrors {
   firstName: string;
   lastName: string;
+  country: string;
 }
 
 export type ErrorsKey = keyof IErrors;
