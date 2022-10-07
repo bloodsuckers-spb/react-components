@@ -5,11 +5,6 @@ export enum countries {
   Sweden = 'Sweden',
 }
 
-export interface textInputProp {
-  content: string;
-  id: string;
-}
-
 export type FormProps = Record<string, never>;
 
 export interface IErrors {
@@ -18,6 +13,11 @@ export interface IErrors {
 }
 
 export type ErrorsKey = keyof IErrors;
+
+export interface TextInputProp {
+  content: string;
+  id: ErrorsKey;
+}
 
 export interface FormState {
   isDisabled: boolean;

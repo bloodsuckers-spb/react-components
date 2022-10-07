@@ -1,4 +1,6 @@
-export const textInputProps = [
+import { TextInputProp } from '../components/Form/interfaces';
+
+export const textInputProps: TextInputProp[] = [
   {
     content: 'First Name:',
     id: 'firstName',

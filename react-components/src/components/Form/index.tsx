@@ -1,6 +1,6 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { countries, FormProps, FormState, ErrorsKey } from './interfaces';
+import { countries, FormProps, FormState, ErrorsKey, IErrors } from './interfaces';
 import { refInput, refSelect } from './interfaces';
 import TextInput from '../TextInput';
 import SelectOptions from '../SelectOption';
@@ -13,7 +13,7 @@ export default class Form extends Component<FormProps, FormState> {
   private country: refSelect = React.createRef();
   // private fileUpload: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
-  private isErrors = false;
+  // private isErrors = false;
   constructor(props: FormProps) {
     super(props);
     this.state = {
@@ -25,6 +25,10 @@ export default class Form extends Component<FormProps, FormState> {
     };
   }
 
+  get hasErrors() {
+    return !!Object.values(this.state.errors).join('').length;
+  }
+
   changeErrorMsg = (key: ErrorsKey, errMsg: string) => {
     const { errors } = this.state;
     errors[key] = errMsg;
@@ -32,23 +36,34 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { isErrors } = this;
     const { isDisabled } = this.state;
-    if (!isErrors && isDisabled) {
+
+    if (!this.hasErrors && isDisabled) {
       this.setState({ isDisabled: false });
-    } else {
+    }
+
+    if (this.hasErrors) {
       const { currentTarget } = event;
-      this.changeErrorMsg('firstName', '');
+      const id = currentTarget.id.trim() as keyof IErrors;
+      this.changeErrorMsg(id, '');
       currentTarget.style.border = '1px solid transparent';
+    }
+
+    if (!this.hasErrors && isDisabled) {
+      this.setState({ isDisabled: false });
     }
   };
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    this.isErrors = false;
+    this.validate();
+  };
+
+  validate = () => {
     const { validateTextInput } = this;
     validateTextInput('firstName').validateTextInput('lastName');
-    if (!this.isErrors) {
+    const isErrors = this.hasErrors;
+    if (!isErrors) {
       this.addCard();
     } else {
       this.setState({ isDisabled: true });
@@ -60,7 +75,6 @@ export default class Form extends Component<FormProps, FormState> {
     if (node) {
       const { value } = node;
       if (value.length < 3 || !/^[A-Z][a-z]+|[А-Я][а-я]+$/.test(value)) {
-        this.isErrors = true;
         this.changeErrorMsg(key, `${key} is incorrect`);
         node.style.border = '1px solid red';
       } else {

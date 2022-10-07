@@ -1,12 +1,9 @@
 import React from 'react';
 
-interface textInputProp {
-  content: string;
-  id: string;
-}
+import { TextInputProp } from '../Form/interfaces';
 
 interface TextInputProps {
-  data: textInputProp;
+  data: TextInputProp;
   refer: React.RefObject<HTMLInputElement>;
   error: string;
   fn: (event: React.FormEvent<HTMLInputElement>) => void;
