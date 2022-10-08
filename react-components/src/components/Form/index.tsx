@@ -2,17 +2,22 @@ import React, { Component, FormEvent } from 'react';
 import './index.css';
 import { countries, FormProps, FormState, ErrorsKey, IErrors } from './interfaces';
 import { refInput, refSelect } from './interfaces';
-import SelectOptions from '../SelectOption';
+// import SelectOptions from '../SelectOption';
 import FormInput from '../FormInput';
+import FormSelect from 'components/FormSelect';
+import inputData from '../../constants/inputData';
+import selectData from '../../constants/selectData';
 
 export default class Form extends Component<FormProps, FormState> {
-  private readonly firstName: refInput = React.createRef();
-  private readonly lastName: refInput = React.createRef();
-  private readonly birthday: refInput = React.createRef();
-  private readonly country: refSelect = React.createRef();
-  private readonly profilePic: refInput = React.createRef();
-  private selectOptions: Readonly<string[]> = Object.values(countries);
+  private firstName: refInput = React.createRef();
+  private lastName: refInput = React.createRef();
+  private birthday: refInput = React.createRef();
+  private profilePic: refInput = React.createRef();
+  private country: refSelect = React.createRef();
+  // private selectOptions: Readonly<string[]> = Object.values(countries);
   private addCard;
+  private inputData;
+  private selectData;
   constructor(props: FormProps) {
     super(props);
     this.state = {
@@ -20,12 +25,21 @@ export default class Form extends Component<FormProps, FormState> {
       errors: {
         firstName: '',
         lastName: '',
-        country: '',
         birthday: '',
         profilePic: '',
+        country: '',
       },
     };
     this.addCard = props.fn;
+    const { firstName, lastName, birthday, profilePic, country, state } = this;
+    const refArray = [firstName, lastName, birthday, profilePic];
+    this.inputData = inputData.map((item, i) => {
+      const { id } = item;
+      const errMsg = state.errors[id];
+      return Object.assign(item, { errorMsg: errMsg, ref: refArray[i] });
+    });
+    const selectErrMsg = state.errors.country;
+    this.selectData = Object.assign(selectData, { errorMsg: selectErrMsg, ref: country });
   }
 
   get hasErrors() {
@@ -135,50 +149,13 @@ export default class Form extends Component<FormProps, FormState> {
 
   render() {
     const { isDisabled } = this.state;
-    const formItems = [
-      {
-        title: 'First Name:',
-        id: 'firstName',
-        type: 'text',
-        errorMsg: this.state.errors.firstName,
-        ref: this.firstName,
-      },
-      {
-        title: 'Last Name:',
-        id: 'lastName',
-        type: 'text',
-        errorMsg: this.state.errors.lastName,
-        ref: this.lastName,
-      },
-
-      {
-        title: 'Your birthday:',
-        id: 'birthday',
-        type: 'date',
-        errorMsg: this.state.errors.birthday,
-        ref: this.birthday,
-      },
-      {
-        title: 'Add picture:',
-        id: 'profilePic',
-        type: 'file',
-        errorMsg: this.state.errors.birthday,
-        ref: this.profilePic,
-      },
-    ];
+    const { inputData, selectData, handleChange, handleSubmit } = this;
     return (
-      <form className="form" onSubmit={this.handleSubmit}>
-        {formItems.map((data, i) => (
-          <FormInput key={i} data={data} handler={this.handleChange} />
+      <form className="form" onSubmit={handleSubmit}>
+        {inputData.map((data, i) => (
+          <FormInput key={i} data={data} handler={handleChange} />
         ))}
-        <label htmlFor="country">Your country:</label>
-        <select id="country" ref={this.country} onChange={this.handleChange}>
-          <option value="">-- Choose city --</option>
-          {this.selectOptions.map((country, i) => (
-            <SelectOptions key={i} country={country} />
-          ))}
-        </select>
-        <p className="error">{this.state.errors.country}</p>
+        <FormSelect data={selectData} handler={handleChange} />
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
     );

@@ -12,11 +12,7 @@ export interface FormProps {
 }
 
 export interface IErrors {
-  firstName: string;
-  lastName: string;
-  country: string;
-  birthday: string;
-  profilePic: string;
+  [key: string]: string;
 }
 
 export type ErrorsKey = keyof IErrors;
