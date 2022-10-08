@@ -33,13 +33,14 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   createCard = () => {
-    const profilePic = this.profilePic.current?.files || '';
+    const { firstName, lastName, country, birthday, profilePic } = this;
+    const profileImg = profilePic.current?.files || '';
     const formData = {
-      firstName: this.firstName.current?.value || '',
-      lastName: this.lastName.current?.value || '',
-      country: this.country.current?.value || '',
-      birthday: this.birthday.current?.value || '',
-      profilePic: profilePic instanceof FileList ? URL.createObjectURL(profilePic[0]) : '',
+      firstName: firstName.current?.value || '',
+      lastName: lastName.current?.value || '',
+      country: country.current?.value || '',
+      birthday: birthday.current?.value || '',
+      profilePic: profileImg instanceof FileList ? URL.createObjectURL(profileImg[0]) : '',
     };
     this.addCard(formData);
   };
@@ -129,12 +130,7 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   validateFile = () => {
-    if (this.profilePic.current) {
-      const files = this.profilePic.current.files;
-      if (files) {
-        const obj = URL.createObjectURL(files['0']);
-      }
-    }
+    console.log('validateFile');
   };
 
   render() {
@@ -146,7 +142,6 @@ export default class Form extends Component<FormProps, FormState> {
         type: 'text',
         errorMsg: this.state.errors.firstName,
         ref: this.firstName,
-        handler: this.handleChange,
       },
       {
         title: 'Last Name:',
@@ -154,7 +149,6 @@ export default class Form extends Component<FormProps, FormState> {
         type: 'text',
         errorMsg: this.state.errors.lastName,
         ref: this.lastName,
-        handler: this.handleChange,
       },
 
       {
@@ -163,7 +157,6 @@ export default class Form extends Component<FormProps, FormState> {
         type: 'date',
         errorMsg: this.state.errors.birthday,
         ref: this.birthday,
-        handler: this.handleChange,
       },
       {
         title: 'Add picture:',
@@ -171,13 +164,12 @@ export default class Form extends Component<FormProps, FormState> {
         type: 'file',
         errorMsg: this.state.errors.birthday,
         ref: this.profilePic,
-        handler: this.handleChange,
       },
     ];
     return (
       <form className="form" onSubmit={this.handleSubmit}>
         {formItems.map((data, i) => (
-          <FormInput key={i} data={data} />
+          <FormInput key={i} data={data} handler={this.handleChange} />
         ))}
         <label htmlFor="country">Your country:</label>
         <select id="country" ref={this.country} onChange={this.handleChange}>
