@@ -10,7 +10,7 @@ export default class Form extends Component<FormProps, FormState> {
   private readonly lastName: refInput = React.createRef();
   private readonly birthday: refInput = React.createRef();
   private readonly country: refSelect = React.createRef();
-  // private fileUpload: refInput = React.createRef();
+  private readonly profilePic: refInput = React.createRef();
   private selectOptions: Readonly<string[]> = Object.values(countries);
   private addCard;
   constructor(props: FormProps) {
@@ -22,6 +22,7 @@ export default class Form extends Component<FormProps, FormState> {
         lastName: '',
         country: '',
         birthday: '',
+        profilePic: '',
       },
     };
     this.addCard = props.fn;
@@ -32,11 +33,13 @@ export default class Form extends Component<FormProps, FormState> {
   }
 
   createCard = () => {
+    const profilePic = this.profilePic.current?.files || '';
     const formData = {
       firstName: this.firstName.current?.value || '',
       lastName: this.lastName.current?.value || '',
       country: this.country.current?.value || '',
       birthday: this.birthday.current?.value || '',
+      profilePic: profilePic instanceof FileList ? URL.createObjectURL(profilePic[0]) : '',
     };
     this.addCard(formData);
   };
@@ -72,7 +75,11 @@ export default class Form extends Component<FormProps, FormState> {
 
   validate = () => {
     const { validateTextInput } = this;
-    validateTextInput('firstName').validateTextInput('lastName').validateSelect().validateDate();
+    validateTextInput('firstName')
+      .validateTextInput('lastName')
+      .validateSelect()
+      .validateDate()
+      .validateFile();
     const isErrors = this.hasErrors;
     if (!isErrors) {
       this.createCard();
@@ -118,6 +125,16 @@ export default class Form extends Component<FormProps, FormState> {
         this.changeErrorMsg('birthday', ``);
       }
     }
+    return this;
+  };
+
+  validateFile = () => {
+    if (this.profilePic.current) {
+      const files = this.profilePic.current.files;
+      if (files) {
+        const obj = URL.createObjectURL(files['0']);
+      }
+    }
   };
 
   render() {
@@ -146,6 +163,14 @@ export default class Form extends Component<FormProps, FormState> {
         type: 'date',
         errorMsg: this.state.errors.birthday,
         ref: this.birthday,
+        handler: this.handleChange,
+      },
+      {
+        title: 'Add picture:',
+        id: 'profilePic',
+        type: 'file',
+        errorMsg: this.state.errors.birthday,
+        ref: this.profilePic,
         handler: this.handleChange,
       },
     ];
