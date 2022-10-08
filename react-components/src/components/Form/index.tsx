@@ -33,11 +33,7 @@ export default class Form extends Component<FormProps, FormState> {
     this.addCard = props.fn;
     const { firstName, lastName, birthday, profilePic, country, state } = this;
     const refArray = [firstName, lastName, birthday, profilePic];
-    this.inputData = inputData.map((item, i) => {
-      const { id } = item;
-      const errMsg = state.errors[id];
-      return Object.assign(item, { errorMsg: errMsg, ref: refArray[i] });
-    });
+    this.inputData = inputData.map((item, i) => Object.assign(item, { ref: refArray[i] }));
     const selectErrMsg = state.errors.country;
     this.selectData = Object.assign(selectData, { errorMsg: selectErrMsg, ref: country });
   }
@@ -148,13 +144,14 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   render() {
-    const { isDisabled } = this.state;
+    const { isDisabled, errors } = this.state;
     const { inputData, selectData, handleChange, handleSubmit } = this;
     return (
       <form className="form" onSubmit={handleSubmit}>
-        {inputData.map((data, i) => (
-          <FormInput key={i} data={data} handler={handleChange} />
-        ))}
+        {inputData.map((data, i) => {
+          const { id } = data;
+          return <FormInput key={i} data={data} errorMsg={errors[id]} handler={handleChange} />;
+        })}
         <FormSelect data={selectData} handler={handleChange} />
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
