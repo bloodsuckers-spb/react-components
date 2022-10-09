@@ -1,9 +1,5 @@
 export interface ICards {
-  firstName: string;
-  lastName: string;
-  country: string;
-  birthday: string;
-  profilePic: string;
+  [key: string]: string;
 }
 
 export type FormProps = Record<string, never>;

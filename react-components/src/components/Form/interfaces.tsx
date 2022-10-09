@@ -24,7 +24,6 @@ export interface TextInputProp {
 
 export interface FormState {
   isDisabled: boolean;
-  errors: IErrors;
 }
 
 export type refInput = React.RefObject<HTMLInputElement>;

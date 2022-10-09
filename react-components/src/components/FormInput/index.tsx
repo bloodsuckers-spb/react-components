@@ -1,25 +1,36 @@
 import React from 'react';
 
-interface FormItemData {
+interface IProps {
+  data: IPropsData;
   id: string;
-  type: string;
-  title: string;
-  ref: React.RefObject<HTMLInputElement>;
-}
-
-interface FormItemProp {
-  data: FormItemData;
-  errorMsg: string;
   handler: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
-const FormInput = ({ data, errorMsg, handler }: FormItemProp) => {
-  const { title, id, type, ref } = data;
+type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
+type inputRef = React.RefObject<HTMLInputElement>;
+
+interface IPropsData {
+  tag?: string;
+  type?: string;
+  title: string;
+  errMsg: string;
+  isError: boolean;
+  ref: TRef;
+}
+
+const FormInput = ({ data, id, handler }: IProps) => {
+  const { title, type, errMsg, ref, isError } = data;
   return (
     <>
       <label htmlFor={id}>{title}</label>
-      <input id={id} type={type} ref={ref} onChange={handler} autoComplete="off"></input>
-      <p className="error">{errorMsg}</p>
+      <input
+        id={id}
+        type={type}
+        ref={ref as inputRef}
+        onChange={handler}
+        autoComplete="off"
+      ></input>
+      <p className="error">{isError && errMsg}</p>
     </>
   );
 };

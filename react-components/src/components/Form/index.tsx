@@ -1,81 +1,81 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { countries, FormProps, FormState, ErrorsKey, IErrors } from './interfaces';
-import { refInput, refSelect } from './interfaces';
+import { countries, FormProps, FormState } from './interfaces';
 // import SelectOptions from '../SelectOption';
-import FormInput from '../FormInput';
-import FormSelect from 'components/FormSelect';
-import inputData from '../../constants/inputData';
-import selectData from '../../constants/selectData';
+
+import FormItem from 'components/FormItem';
+import formData from '../../constants/formData';
+
+interface IData {
+  [key: string]: IDataItem;
+}
+
+interface IFormData {
+  [key: string]: string;
+}
+
+type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
+
+type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
+
+interface IDataItem {
+  tag?: string;
+  type?: string;
+  title: string;
+  isError: boolean;
+  errMsg: string;
+  ref: TRef;
+}
 
 export default class Form extends Component<FormProps, FormState> {
-  private firstName: refInput = React.createRef();
-  private lastName: refInput = React.createRef();
-  private birthday: refInput = React.createRef();
-  private profilePic: refInput = React.createRef();
-  private country: refSelect = React.createRef();
-  // private selectOptions: Readonly<string[]> = Object.values(countries);
   private addCard;
-  private inputData;
-  private selectData;
+  private formItems;
+  private errCount = 0;
   constructor(props: FormProps) {
     super(props);
     this.state = {
       isDisabled: true,
-      errors: {
-        firstName: '',
-        lastName: '',
-        birthday: '',
-        profilePic: '',
-        country: '',
-      },
     };
+
     this.addCard = props.fn;
-    const { firstName, lastName, birthday, profilePic, country, state } = this;
-    const refArray = [firstName, lastName, birthday, profilePic];
-    this.inputData = inputData.map((item, i) => Object.assign(item, { ref: refArray[i] }));
-    const selectErrMsg = state.errors.country;
-    this.selectData = Object.assign(selectData, { errorMsg: selectErrMsg, ref: country });
+    this.formItems = formData.reduce((acc: IData, curr) => {
+      const { id, ...rest } = curr;
+      acc[id] = {
+        ref: React.createRef(),
+        isError: false,
+        ...rest,
+      };
+      return acc;
+    }, {});
   }
 
-  get hasErrors() {
-    return !!Object.values(this.state.errors).join('').length;
-  }
-
-  createCard = () => {
-    const { firstName, lastName, country, birthday, profilePic } = this;
-    const profileImg = profilePic.current?.files || '';
-    const formData = {
-      firstName: firstName.current?.value || '',
-      lastName: lastName.current?.value || '',
-      country: country.current?.value || '',
-      birthday: birthday.current?.value || '',
-      profilePic: profileImg instanceof FileList ? URL.createObjectURL(profileImg[0]) : '',
-    };
-    this.addCard(formData);
+  setDisabledStatus = (status: boolean) => {
+    this.setState({ isDisabled: status });
   };
 
-  changeErrorMsg = (key: ErrorsKey, errMsg: string) => {
-    const { errors } = this.state;
-    errors[key] = errMsg;
-    this.setState({ errors: errors });
+  setErrStatus = (key: string, status: boolean) => {
+    const { formItems, errCount } = this;
+    formItems[key].isError = status;
+    this.errCount = status ? errCount + 1 : errCount - 1;
   };
 
-  handleChange = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
+  getItemsKeys = () => Object.keys(this.formItems);
+
+  handleChange = (event: TFormEvent) => {
     const { isDisabled } = this.state;
-    if (!this.hasErrors && isDisabled) {
-      this.setState({ isDisabled: false });
-    }
+    const { errCount, setErrStatus, setDisabledStatus } = this;
 
-    if (this.hasErrors) {
+    if (!errCount && isDisabled) setDisabledStatus(false);
+
+    if (errCount > 0) {
       const { currentTarget } = event;
-      const id = currentTarget.id.trim() as keyof IErrors;
-      this.changeErrorMsg(id, '');
+      // TODO
+      const id = currentTarget.id.trim();
       currentTarget.style.border = '1px solid transparent';
-    }
-
-    if (!this.hasErrors && isDisabled) {
-      this.setState({ isDisabled: false });
+      setErrStatus(id, false);
+      if (!errCount && isDisabled) {
+        setDisabledStatus(false);
+      }
     }
   };
 
@@ -85,74 +85,84 @@ export default class Form extends Component<FormProps, FormState> {
   };
 
   validate = () => {
-    const { validateTextInput } = this;
-    validateTextInput('firstName')
-      .validateTextInput('lastName')
-      .validateSelect()
-      .validateDate()
-      .validateFile();
-    const isErrors = this.hasErrors;
-    if (!isErrors) {
-      this.createCard();
+    const { formItems, getItemsKeys, getValue } = this;
+    const { isTextInputValid, isDateValid, isSelectValid } = this;
+    const itemsKeys = getItemsKeys();
+    for (const key of itemsKeys) {
+      const value = getValue(key);
+      const { type } = formItems[key];
+      switch (type) {
+        case 'text':
+          if (!isTextInputValid(value)) {
+            this.setErrStatus(key, true);
+          }
+          break;
+        case 'date':
+          if (!isDateValid(value)) {
+            this.setErrStatus(key, true);
+          }
+          break;
+        case undefined:
+          if (!isSelectValid(value)) {
+            this.setErrStatus(key, true);
+          }
+          break;
+        default:
+          break;
+      }
+    }
+    const { errCount } = this;
+    if (errCount > 0) {
+      this.setDisabledStatus(true);
     } else {
-      this.setState({ isDisabled: true });
+      this.createCard();
     }
   };
 
-  validateTextInput = (key: 'firstName' | 'lastName') => {
-    const node = this[key].current;
-    if (node) {
-      const { value } = node;
-      if (value.length < 3 || !/^[A-Z][a-z]+|[А-Я][а-я]+$/.test(value)) {
-        this.changeErrorMsg(key, `${key} is incorrect`);
-        node.style.border = '1px solid red';
+  getValue = (key: string) => {
+    const { ref } = this.formItems[key];
+    return ref.current!.value;
+  };
+
+  isTextInputValid = (value: string) => {
+    return value.length > 2 && /^[A-Z][a-z]+|[А-Я][а-я]+$/.test(value);
+  };
+
+  isSelectValid = (value: string) => {
+    return value.length;
+  };
+
+  isDateValid = (value: string) => {
+    return /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value) && Date.now() - Date.parse(value) > 0;
+  };
+
+  createCard = () => {
+    const { getItemsKeys, getValue, formItems } = this;
+    const itemsKeys = getItemsKeys();
+    const formData = itemsKeys.reduce((acc: IFormData, curr) => {
+      if (formItems[curr].type === 'file') {
+        const { ref } = this.formItems[curr];
+        if (ref.current instanceof HTMLInputElement) {
+          const profileImg = ref.current.files;
+          acc[curr] = profileImg instanceof FileList ? URL.createObjectURL(profileImg[0]) : '';
+        }
       } else {
-        this.changeErrorMsg(key, ``);
+        acc[curr] = getValue(curr);
       }
-    }
-    return this;
-  };
-
-  validateSelect = () => {
-    if (this.country.current) {
-      const node = this.country.current;
-      if (!node?.value) {
-        this.changeErrorMsg('country', `Please choose country`);
-        node.style.border = '1px solid red';
-      } else {
-        this.changeErrorMsg('country', ``);
-      }
-    }
-    return this;
-  };
-
-  validateDate = () => {
-    if (this.birthday.current) {
-      const { value } = this.birthday.current;
-      if (!/[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value) || Date.now() - Date.parse(value) < 0) {
-        this.changeErrorMsg('birthday', `incorrect date`);
-        this.birthday.current.style.border = '1px solid red';
-      } else {
-        this.changeErrorMsg('birthday', ``);
-      }
-    }
-    return this;
-  };
-
-  validateFile = () => {
-    console.log('validateFile');
+      return acc;
+    }, {});
+    this.addCard(formData);
   };
 
   render() {
-    const { isDisabled, errors } = this.state;
-    const { inputData, selectData, handleChange, handleSubmit } = this;
+    const { isDisabled } = this.state;
+    const { getItemsKeys, handleChange, handleSubmit, formItems } = this;
     return (
       <form className="form" onSubmit={handleSubmit}>
-        {inputData.map((data, i) => {
-          const { id } = data;
-          return <FormInput key={i} data={data} errorMsg={errors[id]} handler={handleChange} />;
+        {getItemsKeys().map((objKey, i) => {
+          const data = formItems[objKey];
+          return <FormItem key={i} id={objKey} data={data} handler={handleChange} />;
         })}
-        <FormSelect data={selectData} handler={handleChange} />
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
     );
