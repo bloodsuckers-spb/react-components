@@ -56,7 +56,14 @@ export default class Form extends Component<IProps, IState> {
     }
   };
 
+  setValidationResult = (errors: IErrors) => {
+    this.setErrors(errors);
+    this.isInvalid = this.isErrors(errors);
+    return this.isInvalid;
+  };
+
   handleChange = (event: TFormEvent) => {
+    const { id } = event.currentTarget;
     if (!this.isInvalid && !this.state.isDisabled) {
       return;
     }
@@ -67,7 +74,6 @@ export default class Form extends Component<IProps, IState> {
     if (this.isInvalid && this.state.isDisabled) {
       this.setDisabledStatus(false);
     }
-    const { id } = event.currentTarget;
     this.deleteErrors(id);
   };
 
@@ -84,9 +90,8 @@ export default class Form extends Component<IProps, IState> {
       cardData[id] = value;
       errors[id] = this.validate(type, value);
     });
-    this.setErrors(errors);
-    this.isInvalid = this.isErrors(errors);
-    !this.isInvalid && this.createCard(target, cardData);
+    if (this.setValidationResult(errors)) return;
+    this.createCard(target, cardData);
   };
 
   isTextInputValid = (value: string) => {
