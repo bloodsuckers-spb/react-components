@@ -8,6 +8,7 @@ type THandler = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) =
 interface IProps {
   data: IPropsData;
   id: string;
+  isError: boolean;
   handler: THandler;
 }
 
@@ -20,10 +21,10 @@ interface IPropsData {
   ref: TRef;
 }
 
-const FormItem = ({ data, id, handler }: IProps) => {
+const FormItem = ({ data, id, isError, handler }: IProps) => {
   const { tag } = data;
   return !tag ? (
-    <FormInput id={id} data={data} handler={handler} />
+    <FormInput isError={isError} id={id} data={data} handler={handler} />
   ) : (
     <FormSelect id={id} data={data} handler={handler} />
   );

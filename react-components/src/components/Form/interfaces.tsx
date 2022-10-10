@@ -7,12 +7,17 @@ export enum countries {
   Sweden = 'Sweden',
 }
 
-export interface FormProps {
+export interface IProps {
   fn: (data: ICards) => void;
 }
 
+export interface IState {
+  isDisabled: boolean;
+  errors: IErrors;
+}
+
 export interface IErrors {
-  [key: string]: string;
+  [key: string]: boolean;
 }
 
 export type ErrorsKey = keyof IErrors;
@@ -20,10 +25,6 @@ export type ErrorsKey = keyof IErrors;
 export interface TextInputProp {
   content: string;
   id: ErrorsKey;
-}
-
-export interface FormState {
-  isDisabled: boolean;
 }
 
 export type refInput = React.RefObject<HTMLInputElement>;

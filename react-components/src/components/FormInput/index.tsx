@@ -3,6 +3,7 @@ import React from 'react';
 interface IProps {
   data: IPropsData;
   id: string;
+  isError: boolean;
   handler: (event: React.FormEvent<HTMLInputElement>) => void;
 }
 
@@ -18,8 +19,9 @@ interface IPropsData {
   ref: TRef;
 }
 
-const FormInput = ({ data, id, handler }: IProps) => {
-  const { title, type, errMsg, ref, isError } = data;
+const FormInput = ({ data, id, isError, handler }: IProps) => {
+  const { title, type, errMsg, ref } = data;
+  console.log(isError);
   return (
     <>
       <label htmlFor={id}>{title}</label>
