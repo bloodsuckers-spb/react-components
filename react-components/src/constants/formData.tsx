@@ -29,12 +29,12 @@ const formData = [
     title: 'Your country:',
     errMsg: 'invalid country',
   },
-  // {
-  //   id: 'sex',
-  //   title: 'Male/Female:',
-  //   type: 'checkbox',
-  //   errMsg: '',
-  // },
+  {
+    id: 'conformation',
+    title: 'Сonfirm:',
+    type: 'checkbox',
+    errMsg: 'You must confirm!',
+  },
 ];
 
 export default formData;

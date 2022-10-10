@@ -43,6 +43,18 @@ export default class Form extends Component<IProps, IState> {
     return elem ? URL.createObjectURL(elem) : '';
   };
 
+  getValue = (form: HTMLFormElement, id: string, type?: string) => {
+    const input = form[id];
+    switch (type) {
+      case 'file':
+        return this.getImgUrl(input.files[0]);
+      case 'checkbox':
+        return input.checked;
+      default:
+        return input.value;
+    }
+  };
+
   validate = (type: string | undefined, value: string) => {
     switch (type) {
       case 'text':
@@ -51,6 +63,8 @@ export default class Form extends Component<IProps, IState> {
         return !this.isDateValid(value);
       case 'file':
         return !this.isFileValid(value);
+      case 'checkbox':
+        return !this.isConfirm(value);
       default:
         return !this.isSelectValid(value);
     }
@@ -91,8 +105,7 @@ export default class Form extends Component<IProps, IState> {
     if (!(target instanceof HTMLFormElement)) return;
     this.formItems.forEach((data) => {
       const { id, type } = data;
-      const input = target[id];
-      const value = type === 'file' ? this.getImgUrl(input.files[0]) : input.value;
+      const value = this.getValue(target, id, type);
       cardData[id] = value;
       errors[id] = this.validate(type, value);
     });
@@ -114,6 +127,10 @@ export default class Form extends Component<IProps, IState> {
   };
 
   isFileValid = (value: string) => {
+    return !!value;
+  };
+
+  isConfirm = (value: string) => {
     return !!value;
   };
 
