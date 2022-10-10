@@ -1,31 +1,31 @@
 const formData = [
   {
-    title: 'First Name:',
     id: 'firstName',
+    title: 'First Name:',
     type: 'text',
     errMsg: 'Invalid First Name',
   },
   {
-    title: 'Last Name:',
     id: 'lastName',
+    title: 'Last Name:',
     type: 'text',
     errMsg: 'Invalid Last Name',
   },
   {
-    title: 'Born date:',
     id: 'bornDate',
+    title: 'Born date:',
     type: 'date',
     errMsg: 'Invalid Born date',
   },
   {
-    title: 'Profile pic:',
     id: 'profilePic',
+    title: 'Profile pic:',
     type: 'file',
     errMsg: 'file error',
   },
   {
-    tag: 'select',
     id: 'country',
+    tag: 'select',
     title: 'Your country:',
     errMsg: 'invalid country',
   },

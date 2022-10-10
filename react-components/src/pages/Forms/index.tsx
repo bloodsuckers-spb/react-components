@@ -3,6 +3,7 @@ import './index.css';
 import { FormProps, FormState, ICards } from './interfaces';
 import Form from 'components/Form';
 import FormCard from 'components/FormCard';
+import formData from '../../constants/formData';
 
 export default class Forms extends Component<FormProps, FormState> {
   constructor(props = {}) {
@@ -32,7 +33,7 @@ export default class Forms extends Component<FormProps, FormState> {
     const { cards } = this.state;
     return (
       <main className="main">
-        <Form fn={this.addCard} />
+        <Form data={formData} fn={this.addCard} />
         <ul className="cards-list">
           {cards.map((card, i) => (
             <li key={i}>

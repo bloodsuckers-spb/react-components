@@ -2,6 +2,7 @@ import { ICards } from 'pages/Forms/interfaces';
 
 export interface IProps {
   fn: (data: ICards) => void;
+  data: IDataItem[];
 }
 
 export interface IState {
@@ -17,15 +18,15 @@ export interface IErrors {
   [key: string]: boolean;
 }
 
-export type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
+// export type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
 export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
 
 export interface IDataItem {
+  id: string;
   tag?: string;
   type?: string;
   title: string;
   errMsg: string;
-  ref: TRef;
 }
 
 export interface IData {

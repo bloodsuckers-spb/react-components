@@ -1,14 +1,11 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { IProps, IState, IErrors, IFormData, TFormEvent, IData } from './interfaces';
-
+import { IProps, IState, IErrors, IFormData, TFormEvent } from './interfaces';
 import FormItem from 'components/FormItem';
-import formData from '../../constants/formData';
 
 export default class Form extends Component<IProps, IState> {
   private addCard;
   private formItems;
-  private itemsId: string[] = [];
   private isInvalid = false;
   constructor(props: IProps) {
     super(props);
@@ -16,16 +13,9 @@ export default class Form extends Component<IProps, IState> {
       isDisabled: true,
       errors: {},
     };
-    this.formItems = formData.reduce((acc: IData, curr) => {
-      const { id, ...rest } = curr;
-      acc[id] = {
-        ref: React.createRef(),
-        ...rest,
-      };
-      return acc;
-    }, {});
-    this.itemsId = Object.keys(this.formItems);
-    this.addCard = props.fn;
+    const { data, fn } = props;
+    this.formItems = data;
+    this.addCard = fn;
   }
 
   isErrors = (errors: IErrors) => {
@@ -40,11 +30,6 @@ export default class Form extends Component<IProps, IState> {
     this.setState({ isDisabled: status });
   };
 
-  getValue = (key: string) => {
-    const { ref } = this.formItems[key];
-    return ref.current!.value;
-  };
-
   deleteErrors = (id: string) => {
     const errors = this.state.errors;
     errors[id] = false;
@@ -54,10 +39,21 @@ export default class Form extends Component<IProps, IState> {
     }
   };
 
-  createCard = (target: Element) => {
-    const data = this.getCardData();
-    target instanceof HTMLFormElement && target.reset();
-    this.addCard(data);
+  getImgUrl = (elem: Blob) => {
+    return elem ? URL.createObjectURL(elem) : '';
+  };
+
+  getErrors = (type: string | undefined, value: string) => {
+    switch (type) {
+      case 'text':
+        return !this.isTextInputValid(value);
+      case 'date':
+        return !this.isDateValid(value);
+      case 'file':
+        return !this.isFileValid(value);
+      default:
+        return !this.isSelectValid(value);
+    }
   };
 
   handleChange = (event: TFormEvent) => {
@@ -77,36 +73,27 @@ export default class Form extends Component<IProps, IState> {
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const { validate, isErrors, setErrors, setDisabledStatus, createCard } = this;
-    const errors = validate();
-    setErrors(errors);
-    this.isInvalid = isErrors(errors);
-    setDisabledStatus(true);
-    !this.isInvalid && createCard(event.currentTarget);
+    this.validate(event.target);
   };
 
-  validate = () => {
+  validate = (target: EventTarget) => {
     const errors: IErrors = {};
-    const { formItems, getValue } = this;
-    for (const key of this.itemsId) {
-      const value = getValue(key);
-      const { type } = formItems[key];
-      switch (type) {
-        case 'text':
-          errors[key] = !this.isTextInputValid(value);
-          break;
-        case 'date':
-          errors[key] = !this.isDateValid(value);
-          break;
-        case 'file':
-          errors[key] = !this.isFileValid(value);
-          break;
-        default:
-          errors[key] = !this.isSelectValid(value);
-          break;
-      }
+    const cardData: IFormData = {};
+    if (target instanceof HTMLFormElement) {
+      this.formItems.forEach((data) => {
+        const { id, type } = data;
+        const input = target[id];
+        const value = type === 'file' ? this.getImgUrl(input.files[0]) : input.value;
+        cardData[id] = value;
+        errors[id] = this.getErrors(type, value);
+      });
     }
-    return errors;
+    this.setErrors(errors);
+    this.isInvalid = this.isErrors(errors);
+    if (!this.isInvalid) {
+      this.addCard(cardData);
+      target instanceof HTMLFormElement && target.reset();
+    }
   };
 
   isTextInputValid = (value: string) => {
@@ -114,7 +101,7 @@ export default class Form extends Component<IProps, IState> {
   };
 
   isSelectValid = (value: string) => {
-    return !!value.length;
+    return !!value;
   };
 
   isDateValid = (value: string) => {
@@ -122,35 +109,17 @@ export default class Form extends Component<IProps, IState> {
   };
 
   isFileValid = (value: string) => {
-    return !!value.length;
-  };
-
-  getCardData = () => {
-    const { getValue, formItems, itemsId } = this;
-    return itemsId.reduce((acc: IFormData, curr) => {
-      if (formItems[curr].type === 'file') {
-        const { ref } = this.formItems[curr];
-        if (ref.current instanceof HTMLInputElement) {
-          const profileImg = ref.current.files;
-          acc[curr] = profileImg instanceof FileList ? URL.createObjectURL(profileImg[0]) : '';
-        }
-      } else {
-        acc[curr] = getValue(curr);
-      }
-      return acc;
-    }, {});
+    return !!value;
   };
 
   render() {
     const { errors, isDisabled } = this.state;
-    const { itemsId, handleChange, handleSubmit, formItems } = this;
+    const { handleChange, handleSubmit, formItems } = this;
     return (
       <form className="form" onSubmit={handleSubmit}>
-        {itemsId.map((id, i) => {
-          const data = formItems[id];
-          return (
-            <FormItem key={i} isError={errors[id]} id={id} data={data} handler={handleChange} />
-          );
+        {formItems.map((data, i) => {
+          const { id } = data;
+          return <FormItem key={i} isError={errors[id]} data={data} handler={handleChange} />;
         })}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
       </form>
