@@ -17,7 +17,6 @@ interface IPropsData {
   type?: string;
   title: string;
   errMsg: string;
-  isError: boolean;
   ref: TRef;
 }
 
@@ -26,7 +25,7 @@ const FormItem = ({ data, id, isError, handler }: IProps) => {
   return !tag ? (
     <FormInput isError={isError} id={id} data={data} handler={handler} />
   ) : (
-    <FormSelect id={id} data={data} handler={handler} />
+    <FormSelect isError={isError} id={id} data={data} handler={handler} />
   );
 };
 

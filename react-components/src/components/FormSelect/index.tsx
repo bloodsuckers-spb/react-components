@@ -17,18 +17,18 @@ interface FormSelectData {
   type?: string;
   title: string;
   errMsg: string;
-  isError: boolean;
   ref: TRef;
 }
 
 export interface IProps {
   data: FormSelectData;
   id: string;
+  isError: boolean;
   handler: (event: React.FormEvent<HTMLSelectElement>) => void;
 }
 
-const FormSelect = ({ data, id, handler }: IProps) => {
-  const { title, errMsg, ref, isError } = data;
+const FormSelect = ({ data, id, isError, handler }: IProps) => {
+  const { title, errMsg, ref } = data;
   const selectOptions: Readonly<string[]> = Object.values(countries);
   return (
     <>

@@ -1,30 +1,9 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { IProps, IState, IErrors } from './interfaces';
+import { IProps, IState, IErrors, IFormData, TFormEvent, IData } from './interfaces';
 
 import FormItem from 'components/FormItem';
 import formData from '../../constants/formData';
-
-interface IData {
-  [key: string]: IDataItem;
-}
-
-interface IFormData {
-  [key: string]: string;
-}
-
-type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
-
-type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
-
-interface IDataItem {
-  tag?: string;
-  type?: string;
-  title: string;
-  isError: boolean;
-  errMsg: string;
-  ref: TRef;
-}
 
 export default class Form extends Component<IProps, IState> {
   private addCard;
@@ -41,7 +20,6 @@ export default class Form extends Component<IProps, IState> {
       const { id, ...rest } = curr;
       acc[id] = {
         ref: React.createRef(),
-        isError: false,
         ...rest,
       };
       return acc;
@@ -76,6 +54,12 @@ export default class Form extends Component<IProps, IState> {
     }
   };
 
+  createCard = (target: Element) => {
+    const data = this.getCardData();
+    target instanceof HTMLFormElement && target.reset();
+    this.addCard(data);
+  };
+
   handleChange = (event: TFormEvent) => {
     if (!this.isInvalid && !this.state.isDisabled) {
       return;
@@ -92,34 +76,33 @@ export default class Form extends Component<IProps, IState> {
   };
 
   handleSubmit = (event: FormEvent) => {
-    const { validate, isErrors, setErrors, setDisabledStatus } = this;
     event.preventDefault();
+    const { validate, isErrors, setErrors, setDisabledStatus, createCard } = this;
     const errors = validate();
     setErrors(errors);
     this.isInvalid = isErrors(errors);
     setDisabledStatus(true);
-    !this.isInvalid && this.createCard();
+    !this.isInvalid && createCard(event.currentTarget);
   };
 
   validate = () => {
     const errors: IErrors = {};
     const { formItems, getValue } = this;
-    const { isTextInputValid, isDateValid, isFileValid, isSelectValid } = this;
     for (const key of this.itemsId) {
       const value = getValue(key);
       const { type } = formItems[key];
       switch (type) {
         case 'text':
-          errors[key] = !isTextInputValid(value);
+          errors[key] = !this.isTextInputValid(value);
           break;
         case 'date':
-          errors[key] = !isDateValid(value);
+          errors[key] = !this.isDateValid(value);
           break;
         case 'file':
-          errors[key] = !isFileValid(value);
+          errors[key] = !this.isFileValid(value);
           break;
         default:
-          errors[key] = !isSelectValid(value);
+          errors[key] = !this.isSelectValid(value);
           break;
       }
     }
@@ -142,9 +125,9 @@ export default class Form extends Component<IProps, IState> {
     return !!value.length;
   };
 
-  createCard = () => {
+  getCardData = () => {
     const { getValue, formItems, itemsId } = this;
-    const formData = itemsId.reduce((acc: IFormData, curr) => {
+    return itemsId.reduce((acc: IFormData, curr) => {
       if (formItems[curr].type === 'file') {
         const { ref } = this.formItems[curr];
         if (ref.current instanceof HTMLInputElement) {
@@ -156,7 +139,6 @@ export default class Form extends Component<IProps, IState> {
       }
       return acc;
     }, {});
-    this.addCard(formData);
   };
 
   render() {
@@ -164,16 +146,10 @@ export default class Form extends Component<IProps, IState> {
     const { itemsId, handleChange, handleSubmit, formItems } = this;
     return (
       <form className="form" onSubmit={handleSubmit}>
-        {itemsId.map((objKey, i) => {
-          const data = formItems[objKey];
+        {itemsId.map((id, i) => {
+          const data = formItems[id];
           return (
-            <FormItem
-              key={i}
-              isError={errors[objKey]}
-              id={objKey}
-              data={data}
-              handler={handleChange}
-            />
+            <FormItem key={i} isError={errors[id]} id={id} data={data} handler={handleChange} />
           );
         })}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />

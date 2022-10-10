@@ -15,13 +15,11 @@ interface IPropsData {
   type?: string;
   title: string;
   errMsg: string;
-  isError: boolean;
   ref: TRef;
 }
 
 const FormInput = ({ data, id, isError, handler }: IProps) => {
   const { title, type, errMsg, ref } = data;
-  console.log(isError);
   return (
     <>
       <label htmlFor={id}>{title}</label>

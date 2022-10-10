@@ -1,12 +1,5 @@
 import { ICards } from 'pages/Forms/interfaces';
 
-export enum countries {
-  USA = 'USA',
-  Germany = 'Germany',
-  England = 'England',
-  Sweden = 'Sweden',
-}
-
 export interface IProps {
   fn: (data: ICards) => void;
 }
@@ -16,9 +9,30 @@ export interface IState {
   errors: IErrors;
 }
 
+export interface IFormData {
+  [key: string]: string;
+}
+
 export interface IErrors {
   [key: string]: boolean;
 }
+
+export type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
+export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
+
+export interface IDataItem {
+  tag?: string;
+  type?: string;
+  title: string;
+  errMsg: string;
+  ref: TRef;
+}
+
+export interface IData {
+  [key: string]: IDataItem;
+}
+
+// --------------
 
 export type ErrorsKey = keyof IErrors;
 
@@ -27,5 +41,12 @@ export interface TextInputProp {
   id: ErrorsKey;
 }
 
-export type refInput = React.RefObject<HTMLInputElement>;
-export type refSelect = React.RefObject<HTMLSelectElement>;
+// export type refInput = React.RefObject<HTMLInputElement>;
+// export type refSelect = React.RefObject<HTMLSelectElement>;
+
+// export enum countries {
+//   USA = 'USA',
+//   Germany = 'Germany',
+//   England = 'England',
+//   Sweden = 'Sweden',
+// }
