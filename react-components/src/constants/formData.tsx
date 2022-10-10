@@ -29,6 +29,12 @@ const formData = [
     title: 'Your country:',
     errMsg: 'invalid country',
   },
+  // {
+  //   id: 'sex',
+  //   title: 'Male/Female:',
+  //   type: 'checkbox',
+  //   errMsg: '',
+  // },
 ];
 
 export default formData;

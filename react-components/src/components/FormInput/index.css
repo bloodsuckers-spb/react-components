@@ -1,0 +1,26 @@
+fieldset {
+  margin: 0 0 20px;
+  padding: 20px 15px;
+  border: 1px solid #ae63e4;
+}
+
+/* input[type="submit"] {
+  background: black;
+  color: white;
+  border-radius: 4px;
+  font-weight: 700;
+  border: none;
+  height: 62px;
+  font-size: 1.5rem;
+  margin-top: 10px;
+  width: 200px;
+}
+
+input[type="submit"]:disabled {
+  opacity: 0.5;
+} */
+
+/* .submit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+} */

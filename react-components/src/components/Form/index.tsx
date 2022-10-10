@@ -64,14 +64,20 @@ export default class Form extends Component<IProps, IState> {
 
   handleChange = (event: TFormEvent) => {
     const { id } = event.currentTarget;
+    const err = { ...this.state.errors };
+
     if (!this.isInvalid && !this.state.isDisabled) {
       return;
     }
+
     if (!this.isInvalid && this.state.isDisabled) {
       this.setDisabledStatus(false);
       return;
     }
-    if (this.isInvalid && this.state.isDisabled) {
+
+    err[id] = false;
+
+    if (this.isInvalid && !this.isErrors(err)) {
       this.setDisabledStatus(false);
     }
     this.deleteErrors(id);
@@ -90,6 +96,7 @@ export default class Form extends Component<IProps, IState> {
       cardData[id] = value;
       errors[id] = this.validate(type, value);
     });
+    this.setDisabledStatus(true);
     if (this.setValidationResult(errors)) return;
     this.createCard(target, cardData);
   };

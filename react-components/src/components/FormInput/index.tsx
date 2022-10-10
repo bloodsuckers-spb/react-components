@@ -1,4 +1,5 @@
 import React from 'react';
+import './index.css';
 
 interface IProps {
   data: IPropsData;
@@ -17,11 +18,14 @@ interface IPropsData {
 const FormInput = ({ data, isError, handler }: IProps) => {
   const { id, title, type, errMsg } = data;
   return (
-    <>
-      <label htmlFor={id}>{title}</label>
+    <fieldset>
+      <legend>{title}</legend>
       <input id={id} type={type} onChange={handler} autoComplete="off"></input>
-      <p className="error">{isError && errMsg}</p>
-    </>
+      <label className="error" htmlFor={id}>
+        {isError && errMsg}
+      </label>
+      {/* <p className="error">{isError && errMsg}</p> */}
+    </fieldset>
   );
 };
 
