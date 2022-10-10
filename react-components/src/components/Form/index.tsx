@@ -104,7 +104,7 @@ export default class Form extends Component<IProps, IState> {
   validate = () => {
     const errors: IErrors = {};
     const { formItems, getValue } = this;
-    const { isTextInputValid, isDateValid, isSelectValid } = this;
+    const { isTextInputValid, isDateValid, isFileValid, isSelectValid } = this;
     for (const key of this.itemsId) {
       const value = getValue(key);
       const { type } = formItems[key];
@@ -115,10 +115,11 @@ export default class Form extends Component<IProps, IState> {
         case 'date':
           errors[key] = !isDateValid(value);
           break;
-        case undefined:
-          errors[key] = !isSelectValid(value);
+        case 'file':
+          errors[key] = !isFileValid(value);
           break;
         default:
+          errors[key] = !isSelectValid(value);
           break;
       }
     }
@@ -135,6 +136,10 @@ export default class Form extends Component<IProps, IState> {
 
   isDateValid = (value: string) => {
     return /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value) && Date.now() - Date.parse(value) > 0;
+  };
+
+  isFileValid = (value: string) => {
+    return !!value.length;
   };
 
   createCard = () => {
