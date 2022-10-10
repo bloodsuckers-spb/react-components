@@ -86,10 +86,7 @@ export default class Form extends Component<IProps, IState> {
     });
     this.setErrors(errors);
     this.isInvalid = this.isErrors(errors);
-    if (!this.isInvalid) {
-      this.addCard(cardData);
-      target.reset();
-    }
+    !this.isInvalid && this.createCard(target, cardData);
   };
 
   isTextInputValid = (value: string) => {
@@ -106,6 +103,11 @@ export default class Form extends Component<IProps, IState> {
 
   isFileValid = (value: string) => {
     return !!value;
+  };
+
+  createCard = (form: HTMLFormElement, data: IFormData) => {
+    this.addCard(data);
+    form.reset();
   };
 
   render() {
