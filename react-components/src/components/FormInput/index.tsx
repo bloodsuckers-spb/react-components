@@ -1,19 +1,6 @@
 import React from 'react';
 import './index.css';
-
-interface IProps {
-  data: IPropsData;
-  isError: boolean;
-  handler: (event: React.FormEvent<HTMLInputElement>) => void;
-}
-
-interface IPropsData {
-  id: string;
-  tag?: string;
-  type?: string;
-  title: string;
-  errMsg: string;
-}
+import { IProps } from './interfaces';
 
 const FormInput = ({ data, isError, handler }: IProps) => {
   const { id, title, type, errMsg } = data;
@@ -27,7 +14,6 @@ const FormInput = ({ data, isError, handler }: IProps) => {
       <label className="error" htmlFor={id}>
         {isError && errMsg}
       </label>
-      {/* <p className="error">{isError && errMsg}</p> */}
     </fieldset>
   );
 };
