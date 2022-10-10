@@ -155,7 +155,9 @@ export default class Form extends Component<IProps, IState> {
           return <FormItem key={i} isError={errors[id]} data={data} handler={handleChange} />;
         })}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
-        <p className={this.isMsgActive ? '' : 'hide'}>The data has been saved</p>
+        <p className={this.isMsgActive ? 'confirm-msg' : 'confirm-msg hide'}>
+          The data has been saved
+        </p>
       </form>
     );
   }

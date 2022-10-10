@@ -1,27 +1,31 @@
 .form {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid #000;
-    border-radius: 20px;
-    width: 270px;
-    min-height: 350px;
-    font-weight: bolder;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid #000;
+  border-radius: 20px;
+  width: 270px;
+  min-height: 350px;
+  font-weight: bolder;
 }
 
 .submit {
-    margin: 0 auto;
-    width: 100px;
+  margin: 0 auto;
+  width: 100px;
 }
 
 .error {
-    color: red;
-    font-size: 12px;
-    font-weight: 100;
+  color: red;
+  font-size: 12px;
+  font-weight: 100;
+}
+
+ p.confirm-msg {
+  color: rgb(17, 235, 90);
 }
 
 .hide {
-    opacity: 0;
-    visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
 }

@@ -18,7 +18,6 @@ export interface IErrors {
   [key: string]: boolean;
 }
 
-// export type TRef = React.RefObject<HTMLInputElement | HTMLSelectElement>;
 export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
 
 export interface IDataItem {
@@ -32,22 +31,3 @@ export interface IDataItem {
 export interface IData {
   [key: string]: IDataItem;
 }
-
-// --------------
-
-export type ErrorsKey = keyof IErrors;
-
-export interface TextInputProp {
-  content: string;
-  id: ErrorsKey;
-}
-
-// export type refInput = React.RefObject<HTMLInputElement>;
-// export type refSelect = React.RefObject<HTMLSelectElement>;
-
-// export enum countries {
-//   USA = 'USA',
-//   Germany = 'Germany',
-//   England = 'England',
-//   Sweden = 'Sweden',
-// }
