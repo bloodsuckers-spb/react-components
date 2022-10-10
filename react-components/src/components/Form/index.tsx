@@ -43,7 +43,7 @@ export default class Form extends Component<IProps, IState> {
     return elem ? URL.createObjectURL(elem) : '';
   };
 
-  getErrors = (type: string | undefined, value: string) => {
+  validate = (type: string | undefined, value: string) => {
     switch (type) {
       case 'text':
         return !this.isTextInputValid(value);
@@ -73,26 +73,22 @@ export default class Form extends Component<IProps, IState> {
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    this.validate(event.target);
-  };
-
-  validate = (target: EventTarget) => {
     const errors: IErrors = {};
     const cardData: IFormData = {};
-    if (target instanceof HTMLFormElement) {
-      this.formItems.forEach((data) => {
-        const { id, type } = data;
-        const input = target[id];
-        const value = type === 'file' ? this.getImgUrl(input.files[0]) : input.value;
-        cardData[id] = value;
-        errors[id] = this.getErrors(type, value);
-      });
-    }
+    const { target } = event;
+    if (!(target instanceof HTMLFormElement)) return;
+    this.formItems.forEach((data) => {
+      const { id, type } = data;
+      const input = target[id];
+      const value = type === 'file' ? this.getImgUrl(input.files[0]) : input.value;
+      cardData[id] = value;
+      errors[id] = this.validate(type, value);
+    });
     this.setErrors(errors);
     this.isInvalid = this.isErrors(errors);
     if (!this.isInvalid) {
       this.addCard(cardData);
-      target instanceof HTMLFormElement && target.reset();
+      target.reset();
     }
   };
 
