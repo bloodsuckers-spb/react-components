@@ -20,3 +20,8 @@
     font-size: 12px;
     font-weight: 100;
 }
+
+.hide {
+    opacity: 0;
+    visibility: hidden;
+}

@@ -7,6 +7,7 @@ export default class Form extends Component<IProps, IState> {
   private addCard;
   private formItems;
   private isInvalid = false;
+  private isMsgActive = false;
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -80,6 +81,10 @@ export default class Form extends Component<IProps, IState> {
     const { id } = event.currentTarget;
     const err = { ...this.state.errors };
 
+    if (this.isMsgActive) {
+      this.isMsgActive = false;
+    }
+
     if (!this.isInvalid && !this.state.isDisabled) {
       return;
     }
@@ -136,6 +141,7 @@ export default class Form extends Component<IProps, IState> {
 
   createCard = (form: HTMLFormElement, data: IFormData) => {
     this.addCard(data);
+    this.isMsgActive = true;
     form.reset();
   };
 
@@ -149,6 +155,7 @@ export default class Form extends Component<IProps, IState> {
           return <FormItem key={i} isError={errors[id]} data={data} handler={handleChange} />;
         })}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
+        <p className={this.isMsgActive ? '' : 'hide'}>The data has been saved</p>
       </form>
     );
   }
