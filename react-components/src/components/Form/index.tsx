@@ -155,7 +155,7 @@ export default class Form extends Component<IProps, IState> {
     const { errors, isDisabled } = this.state;
     const { handleChange, handleSubmit, formItems } = this;
     return (
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit} data-testId="react-form">
         {formItems.map((data, i) => {
           const { id } = data;
           return <FormItem key={i} isError={errors[id]} data={data} handler={handleChange} />;

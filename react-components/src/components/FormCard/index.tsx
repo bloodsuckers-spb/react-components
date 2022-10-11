@@ -5,7 +5,7 @@ import { IProps } from './interfaces';
 const FormCard = ({ data }: IProps) => {
   const { switcher, firstName, lastName, country, profilePic, bornDate } = data;
   return (
-    <div className="card form-card">
+    <div className="card form-card" data-testId="form-card">
       <h3>
         {firstName} {lastName}
       </h3>
