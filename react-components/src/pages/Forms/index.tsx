@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './index.css';
-import { FormProps, FormState, ICards } from './interfaces';
+import { IProps, IState } from './interfaces';
+import IFormCards from '../../types/IFormCards';
 import Form from 'components/Form';
 import FormCard from 'components/FormCard';
 import formData from '../../constants/formData';
 
-export default class Forms extends Component<FormProps, FormState> {
+export default class Forms extends Component<IProps, IState> {
   constructor(props = {}) {
     super(props);
     this.state = {
@@ -13,7 +14,7 @@ export default class Forms extends Component<FormProps, FormState> {
     };
   }
 
-  addCard = (data: ICards) => {
+  addCard = (data: IFormCards) => {
     const { cards } = this.state;
     cards.push(data);
     this.setState({ cards: cards });

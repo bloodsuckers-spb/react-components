@@ -1,3 +1,5 @@
+import IFormData from '../../types/IFormData';
+
 export enum countries {
   USA = 'USA',
   Germany = 'Germany',
@@ -5,17 +7,8 @@ export enum countries {
   Sweden = 'Sweden',
 }
 
-interface FormSelectData {
-  id: string;
-  tag?: string;
-  type?: string;
-  title: string;
-  errMsg: string;
-  className: string;
-}
-
 export interface IProps {
-  data: FormSelectData;
+  data: IFormData;
   isError: boolean;
   handler: (event: React.FormEvent<HTMLSelectElement>) => void;
 }

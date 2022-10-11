@@ -1,6 +1,7 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { IProps, IState, IErrors, IFormData, TFormEvent } from './interfaces';
+import { IProps, IState, IErrors, TFormEvent } from './interfaces';
+import IFormCards from 'types/IFormCards';
 import FormItem from 'components/FormItem';
 
 export default class Form extends Component<IProps, IState> {
@@ -110,7 +111,7 @@ export default class Form extends Component<IProps, IState> {
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     const errors: IErrors = {};
-    const cardData: IFormData = {};
+    const cardData: IFormCards = {};
     const { target } = event;
     if (!(target instanceof HTMLFormElement)) return;
     this.formItems.forEach((data) => {
@@ -144,7 +145,7 @@ export default class Form extends Component<IProps, IState> {
     return !!value;
   };
 
-  createCard = (form: HTMLFormElement, data: IFormData) => {
+  createCard = (form: HTMLFormElement, data: IFormCards) => {
     this.addCard(data);
     this.isMsgActive = true;
     form.reset();

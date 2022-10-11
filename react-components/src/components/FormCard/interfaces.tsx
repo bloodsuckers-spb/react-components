@@ -1,5 +1,5 @@
-import { ICards } from '../../pages/Forms/interfaces';
+import IFormCards from '../../types/IFormCards';
 
 export interface IProps {
-  data: ICards;
+  data: IFormCards;
 }

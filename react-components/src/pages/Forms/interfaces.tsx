@@ -1,8 +1,6 @@
-export interface ICards {
-  [key: string]: string;
-}
+import IFormCards from '../../types/IFormCards';
 
-export type FormProps = Record<string, never>;
-export interface FormState {
-  cards: ICards[];
+export type IProps = Record<string, never>;
+export interface IState {
+  cards: IFormCards[];
 }

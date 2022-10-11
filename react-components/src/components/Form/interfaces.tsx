@@ -1,8 +1,9 @@
-import { ICards } from 'pages/Forms/interfaces';
+import IFormCards from '../../types/IFormCards';
+import IFormData from 'types/IFormData';
 
 export interface IProps {
-  fn: (data: ICards) => void;
-  data: IDataItem[];
+  fn: (data: IFormCards) => void;
+  data: IFormData[];
 }
 
 export interface IState {
@@ -10,26 +11,8 @@ export interface IState {
   errors: IErrors;
 }
 
-export interface IFormData {
-  [key: string]: string;
-}
-
 export interface IErrors {
   [key: string]: boolean;
 }
 
 export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
-
-export interface IDataItem {
-  id: string;
-  tag?: string;
-  type?: string;
-  title: string;
-  errMsg: string;
-  className: string;
-  placeholder: string;
-}
-
-export interface IData {
-  [key: string]: IDataItem;
-}

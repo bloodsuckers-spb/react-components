@@ -1,15 +1,7 @@
+import IFormData from '../../types/IFormData';
+
 export interface IProps {
-  data: IPropsData;
+  data: IFormData;
   isError: boolean;
   handler: (event: React.FormEvent<HTMLInputElement>) => void;
-}
-
-interface IPropsData {
-  id: string;
-  tag?: string;
-  type?: string;
-  title: string;
-  errMsg: string;
-  className: string;
-  placeholder: string;
 }
