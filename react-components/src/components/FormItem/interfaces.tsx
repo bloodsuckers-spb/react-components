@@ -6,6 +6,8 @@ interface IPropsData {
   type?: string;
   title: string;
   errMsg: string;
+  className: string;
+  placeholder: string;
 }
 
 export interface IProps {

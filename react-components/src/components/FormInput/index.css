@@ -1,18 +1,37 @@
 fieldset {
-  padding: 20px 15px;
-  border: 1px solid rgb(124, 31, 161);
+  padding: 10px;
+  padding-bottom: 0;
+  border: none;
 }
 
-input[type='file'] {
+fieldset label {
+  display: block;
+}
+
+.form-text-input {
+  padding: 10px;
+  border: 2px solid #eee;
+  box-shadow: 0 0 15px 4px rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+}
+
+.form-file-input {
   max-width: 200px;
 }
 
-.confirmation {
-  font-size: 12px;
-  font-weight: normal;
-  padding-left: 10px;
+.error {
+  padding-top: 5px;
+  height: 20px;
 }
 
-label {
-  display: block;
+
+fieldset span {
+  display: none;
+}
+
+span.form-checkbox-input {
+  display: inline;
+  font-size: 12px;
+  font-weight: normal;
+  padding-left: 5px;
 }

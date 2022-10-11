@@ -26,6 +26,8 @@ export interface IDataItem {
   type?: string;
   title: string;
   errMsg: string;
+  className: string;
+  placeholder: string;
 }
 
 export interface IData {

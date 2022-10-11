@@ -11,6 +11,7 @@ interface FormSelectData {
   type?: string;
   title: string;
   errMsg: string;
+  className: string;
 }
 
 export interface IProps {

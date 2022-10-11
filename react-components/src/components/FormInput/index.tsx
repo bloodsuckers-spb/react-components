@@ -3,17 +3,24 @@ import './index.css';
 import { IProps } from './interfaces';
 
 const FormInput = ({ data, isError, handler }: IProps) => {
-  const { id, title, type, errMsg } = data;
+  const { id, placeholder, className, title, type, errMsg } = data;
   return (
     <fieldset>
       <legend>{title}</legend>
-      <input id={id} type={type} onChange={handler} autoComplete="off"></input>
-      <span className="confirmation">
-        {type === 'checkbox' ? 'Please confirm your personal data' : ''}
-      </span>
-      <label className="error" htmlFor={id}>
-        {isError && errMsg}
+      <label htmlFor={id}>
+        <input
+          className={className}
+          id={id}
+          type={type}
+          onChange={handler}
+          autoComplete="off"
+          placeholder={placeholder}
+        ></input>
+        <span className={className}>
+          {type === 'checkbox' ? 'Please confirm your personal data' : ''}
+        </span>
       </label>
+      <p className="error">{isError && errMsg}</p>
     </fieldset>
   );
 };
