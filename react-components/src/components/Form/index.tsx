@@ -44,13 +44,18 @@ export default class Form extends Component<IProps, IState> {
     return elem ? URL.createObjectURL(elem) : '';
   };
 
+  getSwitchValue = (isChecked: boolean, values = ['Male', 'Female']) => {
+    const [checked, unchecked] = values;
+    return !isChecked ? checked : unchecked;
+  };
+
   getValue = (form: HTMLFormElement, id: string, type?: string) => {
     const input = form[id];
     switch (type) {
       case 'file':
         return this.getImgUrl(input.files[0]);
       case 'checkbox':
-        return input.checked;
+        return id === 'switcher' ? this.getSwitchValue(input.checked) : input.checked;
       default:
         return input.value;
     }

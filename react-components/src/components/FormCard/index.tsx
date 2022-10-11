@@ -7,13 +7,16 @@ interface FormCardProps {
 }
 
 const FormCard = ({ data }: FormCardProps) => {
-  const { firstName, lastName, country, profilePic } = data;
+  const { switcher, firstName, lastName, country, profilePic, bornDate } = data;
+  console.log(data);
   return (
     <div className="card">
       <h3>{firstName}</h3>
       <h4>{lastName}</h4>
-      <img src={profilePic}></img>
+      <p>{bornDate}</p>
+      <p>{switcher}</p>
       <p>{country}</p>
+      <img src={profilePic}></img>
     </div>
   );
 };

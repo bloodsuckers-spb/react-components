@@ -17,7 +17,7 @@ const FormInput = ({ data, isError, handler }: IProps) => {
           placeholder={placeholder}
         ></input>
         <span className={className}>
-          {type === 'checkbox' ? 'Please confirm your personal data' : ''}
+          {id === 'confirm' ? 'Please confirm your personal data' : ''}
         </span>
       </label>
       <p className="error">{isError && errMsg}</p>
