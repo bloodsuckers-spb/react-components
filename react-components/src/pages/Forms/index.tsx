@@ -13,16 +13,6 @@ export default class Forms extends Component<FormProps, FormState> {
     };
   }
 
-  componentDidMount() {
-    const cards = localStorage.getItem('cards') || '';
-    this.setState({ cards: JSON.parse(cards) });
-  }
-
-  componentWillUnmount() {
-    const { cards } = this.state;
-    localStorage.setItem('cards', JSON.stringify(cards));
-  }
-
   addCard = (data: ICards) => {
     const { cards } = this.state;
     cards.push(data);
