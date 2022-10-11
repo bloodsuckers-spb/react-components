@@ -34,7 +34,7 @@ export default class Forms extends Component<FormProps, FormState> {
     return (
       <main className="main">
         <Form data={formData} fn={this.addCard} />
-        <ul className="cards-list">
+        <ul className="cards">
           {cards.map((card, i) => (
             <li key={i}>
               <FormCard data={card} />
