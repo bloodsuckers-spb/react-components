@@ -1,5 +1,5 @@
-import IFormCards from '../../types/IFormCards';
-import IFormData from 'types/IFormData';
+import { IFormCards } from '../../types/index';
+import { IFormData } from '../../types/index';
 
 export interface IProps {
   addCard: (data: IFormCards) => void;

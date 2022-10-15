@@ -1,4 +1,4 @@
-import IFormData from '../../types/IFormData';
+import { IFormData } from '../../types/index';
 
 export enum countries {
   USA = 'USA',

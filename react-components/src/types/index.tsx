@@ -1,4 +1,4 @@
-export default interface IFormData {
+export interface IFormData {
   id: string;
   tag?: string;
   type?: string;
@@ -6,4 +6,8 @@ export default interface IFormData {
   errorMessage: string;
   className: string;
   placeholder: string;
+}
+
+export interface IFormCards {
+  [key: string]: string;
 }
