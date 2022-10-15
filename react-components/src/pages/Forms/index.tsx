@@ -23,7 +23,7 @@ export default class Forms extends Component<IProps, IState> {
     return (
       <main className="main">
         <Form data={formData} addCard={this.addCard} />
-        {cards.length && <CardList cards={cards} />}
+        {!!cards.length && <CardList cards={cards} />}
       </main>
     );
   }

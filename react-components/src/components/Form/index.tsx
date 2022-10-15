@@ -15,9 +15,8 @@ export default class Form extends Component<IProps, IState> {
       isDisabled: true,
       errors: {},
     };
-    const { data, addCard } = props;
-    this.formItems = data;
-    this.addCard = addCard;
+    this.formItems = props.data;
+    this.addCard = props.addCard;
   }
 
   isErrors = (errors: IErrors) => {
