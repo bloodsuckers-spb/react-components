@@ -16,9 +16,11 @@ const FormInput = ({ data, isError, handler }: IProps) => {
           autoComplete="off"
           placeholder={placeholder}
         ></input>
-        <span className={className}>
-          {id === 'confirm' ? 'Please confirm your personal data' : ''}
-        </span>
+        {type === 'checkbox' && (
+          <span className={className}>
+            {id === 'confirm' && 'Please confirm your personal data'}
+          </span>
+        )}
       </label>
       <p className="error">{isError && errMsg}</p>
     </fieldset>
