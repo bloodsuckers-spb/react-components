@@ -2,7 +2,7 @@ import IFormCards from '../../types/IFormCards';
 import IFormData from 'types/IFormData';
 
 export interface IProps {
-  fn: (data: IFormCards) => void;
+  addCard: (data: IFormCards) => void;
   data: IFormData[];
 }
 

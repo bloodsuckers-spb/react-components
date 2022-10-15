@@ -24,7 +24,7 @@ export default class Forms extends Component<IProps, IState> {
     const { cards } = this.state;
     return (
       <main className="main">
-        <Form data={formData} fn={this.addCard} />
+        <Form data={formData} addCard={this.addCard} />
         <ul className="cards">
           {cards.map((card, i) => (
             <li key={i}>
