@@ -1,7 +1,7 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
 import { IProps, IState, IErrors, TFormEvent } from './interfaces';
-import IFormCards from 'types/IFormCards';
+import { IFormCards } from 'types/index';
 import FormItem from 'components/FormItem';
 
 export default class Form extends Component<IProps, IState> {

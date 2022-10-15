@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './index.css';
 import { IProps, IState } from './interfaces';
-import IFormCards from '../../types/IFormCards';
+import { IFormCards } from '../../types/index';
 import Form from 'components/Form';
-import FormCard from 'components/FormCard';
+import CardList from 'components/CardList';
 import formData from '../../constants/formData';
 
 export default class Forms extends Component<IProps, IState> {
@@ -15,9 +15,7 @@ export default class Forms extends Component<IProps, IState> {
   }
 
   addCard = (data: IFormCards) => {
-    const { cards } = this.state;
-    cards.push(data);
-    this.setState({ cards: cards });
+    this.setState((state) => ({ cards: [...state.cards, data] }));
   };
 
   render() {
@@ -25,13 +23,7 @@ export default class Forms extends Component<IProps, IState> {
     return (
       <main className="main">
         <Form data={formData} addCard={this.addCard} />
-        <ul className="cards">
-          {cards.map((card, i) => (
-            <li key={i}>
-              <FormCard data={card} />
-            </li>
-          ))}
-        </ul>
+        {cards.length && <CardList cards={cards} />}
       </main>
     );
   }
