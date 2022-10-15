@@ -3,7 +3,7 @@ export default interface IFormData {
   tag?: string;
   type?: string;
   title: string;
-  errMsg: string;
+  errorMessage: string;
   className: string;
   placeholder: string;
 }

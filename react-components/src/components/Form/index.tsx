@@ -155,15 +155,12 @@ export default class Form extends Component<IProps, IState> {
     const { errors, isDisabled } = this.state;
     const { handleChange, handleSubmit, formItems } = this;
     return (
-      <form className="form" onSubmit={handleSubmit} data-testId="react-form">
-        {formItems.map((data, i) => {
-          const { id } = data;
-          return <FormItem key={i} isError={errors[id]} data={data} handler={handleChange} />;
-        })}
+      <form className="form" onSubmit={handleSubmit} data-testid="react-form">
+        {formItems.map((data, i) => (
+          <FormItem key={i} isError={errors[data.id]} data={data} handler={handleChange} />
+        ))}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
-        <p className={this.isMsgActive ? 'confirm-msg' : 'confirm-msg hide'}>
-          The data has been saved
-        </p>
+        {this.isMsgActive && <p className="confirm-message">The data has been saved</p>}
       </form>
     );
   }

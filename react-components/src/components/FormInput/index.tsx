@@ -3,9 +3,9 @@ import './index.css';
 import { IProps } from './interfaces';
 
 const FormInput = ({ data, isError, handler }: IProps) => {
-  const { id, placeholder, className, title, type, errMsg } = data;
+  const { id, placeholder, className, title, type, errorMessage } = data;
   return (
-    <fieldset>
+    <fieldset className={`fieldset-${className}`}>
       <legend>{title}</legend>
       <label htmlFor={id}>
         <input
@@ -15,14 +15,14 @@ const FormInput = ({ data, isError, handler }: IProps) => {
           onChange={handler}
           autoComplete="off"
           placeholder={placeholder}
-        ></input>
+        />
         {type === 'checkbox' && (
           <span className={className}>
             {id === 'confirm' && 'Please confirm your personal data'}
           </span>
         )}
       </label>
-      <p className="error">{isError && errMsg}</p>
+      {isError && <p className="error">{errorMessage}</p>}
     </fieldset>
   );
 };

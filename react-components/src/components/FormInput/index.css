@@ -1,11 +1,29 @@
 fieldset {
-  padding: 10px;
-  padding-bottom: 0;
+  padding: 0 10px;
   border: none;
+  height: 85px;
+}
+
+.fieldset-form-text-input {
+  height: 100px;
+}
+
+.fieldset-form-checkbox-input {
+  height: 75px;
+}
+
+.fieldset-form-select {
+  height: 70px;
+}
+
+.fieldset-form-select .error {
+  padding-top: 5px;
 }
 
 fieldset label {
   display: block;
+  padding: 10px;
+  padding-bottom: 5px;
 }
 
 .form-text-input {
@@ -20,8 +38,10 @@ fieldset label {
 }
 
 .error {
-  padding-top: 5px;
-  height: 20px;
+  height: 20px; 
+  color: red;
+  font-size: 12px;
+  font-weight: 100;
 }
 
 fieldset span {
