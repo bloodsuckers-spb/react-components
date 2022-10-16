@@ -29,12 +29,9 @@ export default class Form extends Component<IProps, IState> {
   };
 
   changeErrorState = (id: string, status: boolean) => {
-    const errors = this.state.errors.map((error) => {
-      if (error.id === id) {
-        error.isError = status;
-      }
-      return error;
-    });
+    const { errors } = this.state;
+    const index = errors.findIndex((error) => error.id === id);
+    errors[index].isError = status;
     this.setState({ errors });
   };
 
@@ -75,7 +72,6 @@ export default class Form extends Component<IProps, IState> {
   };
 
   handleChange = (event: TFormEvent) => {
-    console.log('handleChange');
     if (this.state.isValid) {
       this.setState({ isValid: false, isDisabled: false });
       return;
@@ -90,7 +86,6 @@ export default class Form extends Component<IProps, IState> {
     }
     if (!this.isErrors() && this.state.isDisabled) {
       this.setState({ isDisabled: false });
-      return;
     }
   };
 
