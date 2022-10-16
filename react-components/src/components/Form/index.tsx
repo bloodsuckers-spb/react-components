@@ -130,6 +130,9 @@ export default class Form extends Component<IProps, IState> {
 
   createCard = (form: HTMLFormElement, data: IFormCards) => {
     this.addCard(data);
+    this.itemsData.forEach((el) => {
+      if (el.type === 'checkbox') form[el.id].checked = false;
+    });
     form.reset();
   };
 
