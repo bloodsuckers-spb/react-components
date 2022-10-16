@@ -1,43 +1,41 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
-import { IProps, IState, IErrors, TFormEvent } from './interfaces';
-import { IFormCards } from 'types/index';
+import { IProps, IState, TFormEvent, IError } from './interfaces';
+import { IFormCards, IFormData } from 'types/index';
 import FormItem from 'components/FormItem';
 
 export default class Form extends Component<IProps, IState> {
   private addCard;
-  private formItems;
-  private isInvalid = false;
-  private isMsgActive = false;
+  private itemsData;
   constructor(props: IProps) {
     super(props);
     this.state = {
       isDisabled: true,
-      errors: {},
+      isValid: false,
+      errors: props.data.map((el) => ({ id: el.id, isError: false })),
     };
-    this.formItems = props.data;
+    this.itemsData = props.data;
     this.addCard = props.addCard;
   }
 
-  isErrors = (errors: IErrors) => {
-    return Object.values(errors).some((value) => value);
+  isErrors = () => {
+    const { errors } = this.state;
+    return errors.some((error) => error.isError);
   };
 
-  setErrors = (errors: IErrors) => {
+  getErrorsCount = () => {
+    const { errors } = this.state;
+    return errors.filter((error) => error.isError).length;
+  };
+
+  changeErrorState = (id: string, status: boolean) => {
+    const errors = this.state.errors.map((error) => {
+      if (error.id === id) {
+        error.isError = status;
+      }
+      return error;
+    });
     this.setState({ errors });
-  };
-
-  setDisabledStatus = (status: boolean) => {
-    this.setState({ isDisabled: status });
-  };
-
-  deleteErrors = (id: string) => {
-    const errors = this.state.errors;
-    errors[id] = false;
-    this.setErrors(errors);
-    if (!this.isErrors(errors)) {
-      this.isInvalid = false;
-    }
   };
 
   getImgUrl = (elem: Blob) => {
@@ -61,7 +59,7 @@ export default class Form extends Component<IProps, IState> {
     }
   };
 
-  validate = (type: string | undefined, value: string) => {
+  validate = (value: string, type?: string) => {
     switch (type) {
       case 'text':
         return !this.isTextInputValid(value);
@@ -76,52 +74,44 @@ export default class Form extends Component<IProps, IState> {
     }
   };
 
-  setValidationResult = (errors: IErrors) => {
-    this.setErrors(errors);
-    this.isInvalid = this.isErrors(errors);
-    return this.isInvalid;
-  };
-
   handleChange = (event: TFormEvent) => {
-    const { id } = event.currentTarget;
-    const err = { ...this.state.errors };
-
-    if (this.isMsgActive) {
-      this.isMsgActive = false;
-    }
-
-    if (!this.isInvalid && !this.state.isDisabled) {
+    console.log('handleChange');
+    if (this.isErrors()) {
+      const { id } = event.currentTarget;
+      this.changeErrorState(id, false);
+      if (!this.getErrorsCount()) {
+        this.setState({ isDisabled: false });
+      }
       return;
     }
-
-    if (!this.isInvalid && this.state.isDisabled) {
-      this.setDisabledStatus(false);
+    if (!this.isErrors() && this.state.isDisabled) {
+      this.setState({ isDisabled: false });
       return;
     }
-
-    err[id] = false;
-
-    if (this.isInvalid && !this.isErrors(err)) {
-      this.setDisabledStatus(false);
+    if (this.state.isValid) {
+      console.log('valid');
+      this.setState({ isValid: false, isDisabled: false });
+      return;
     }
-    this.deleteErrors(id);
   };
 
   handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const errors: IErrors = {};
+    let isValid = true;
+    const errors: IError[] = [];
     const cardData: IFormCards = {};
     const { target } = event;
     if (!(target instanceof HTMLFormElement)) return;
-    this.formItems.forEach((data) => {
+    this.itemsData.forEach((data) => {
       const { id, type } = data;
       const value = this.getValue(target, id, type);
       cardData[id] = value;
-      errors[id] = this.validate(type, value);
+      const isError = this.validate(value, type);
+      if (isError) isValid = false;
+      errors.push({ id, isError });
     });
-    this.setDisabledStatus(true);
-    if (this.setValidationResult(errors)) return;
-    this.createCard(target, cardData);
+    this.setState({ errors, isDisabled: true, isValid });
+    isValid && this.createCard(target, cardData);
   };
 
   isTextInputValid = (value: string) => {
@@ -146,20 +136,25 @@ export default class Form extends Component<IProps, IState> {
 
   createCard = (form: HTMLFormElement, data: IFormCards) => {
     this.addCard(data);
-    this.isMsgActive = true;
     form.reset();
   };
 
+  hasError = ({ id }: IFormData) => {
+    const elem = this.state.errors.find((item) => item.id === id);
+    return !!elem?.isError;
+  };
+
   render() {
-    const { errors, isDisabled } = this.state;
-    const { handleChange, handleSubmit, formItems } = this;
+    const { isDisabled, isValid } = this.state;
+    const { handleChange, handleSubmit, itemsData } = this;
     return (
       <form className="form" onSubmit={handleSubmit} data-testid="react-form">
-        {formItems.map((data, i) => (
-          <FormItem key={i} isError={errors[data.id]} data={data} handler={handleChange} />
-        ))}
+        {itemsData.map((data, i) => {
+          const isError = this.hasError(data);
+          return <FormItem key={i} isError={isError} data={data} handler={handleChange} />;
+        })}
         <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
-        {this.isMsgActive && <p className="confirm-message">The data has been saved</p>}
+        {isValid && <p className="confirm-message">The data has been saved</p>}
       </form>
     );
   }

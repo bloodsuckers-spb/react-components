@@ -3,12 +3,8 @@ import FormInput from 'components/FormInput';
 import FormSelect from 'components/FormSelect';
 import { IProps } from './interfaces';
 
-const FormItem = ({ data, isError, handler }: IProps) => {
-  return data.tag === 'select' ? (
-    <FormSelect isError={isError} data={data} handler={handler} />
-  ) : (
-    <FormInput isError={isError} data={data} handler={handler} />
-  );
+const FormItem = (props: IProps) => {
+  return props.data.tag === 'select' ? <FormSelect {...props} /> : <FormInput {...props} />;
 };
 
 export default FormItem;

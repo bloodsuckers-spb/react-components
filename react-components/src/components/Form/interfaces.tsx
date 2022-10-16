@@ -6,13 +6,24 @@ export interface IProps {
   data: IFormData[];
 }
 
+// export interface IState {
+//   isDisabled: boolean;
+//   errors: IErrors;
+// }
+
 export interface IState {
   isDisabled: boolean;
-  errors: IErrors;
+  isValid: boolean;
+  errors: IError[];
 }
 
-export interface IErrors {
-  [key: string]: boolean;
+export interface IError {
+  id: string;
+  isError: boolean;
 }
+
+// export interface IErrors {
+//   [key: string]: boolean;
+// }
 
 export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;
