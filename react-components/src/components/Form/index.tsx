@@ -76,6 +76,10 @@ export default class Form extends Component<IProps, IState> {
 
   handleChange = (event: TFormEvent) => {
     console.log('handleChange');
+    if (this.state.isValid) {
+      this.setState({ isValid: false, isDisabled: false });
+      return;
+    }
     if (this.isErrors()) {
       const { id } = event.currentTarget;
       this.changeErrorState(id, false);
@@ -86,11 +90,6 @@ export default class Form extends Component<IProps, IState> {
     }
     if (!this.isErrors() && this.state.isDisabled) {
       this.setState({ isDisabled: false });
-      return;
-    }
-    if (this.state.isValid) {
-      console.log('valid');
-      this.setState({ isValid: false, isDisabled: false });
       return;
     }
   };
