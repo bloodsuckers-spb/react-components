@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, FormEvent } from 'react';
 import './index.css';
 import { IProps, IState } from './interfaces';
 import Spinner from '../../components/Spinner';
@@ -15,8 +15,16 @@ export default class Home extends Component<IProps, IState> {
     };
   }
 
-  handleSearch = () => {
-    console.log('handleSearch');
+  handleSearch = (event: FormEvent) => {
+    event.preventDefault();
+    const { target } = event;
+    if (target instanceof HTMLFormElement) {
+      const { value } = target['search-bar'];
+      FetchAPI.getData(value).then((res) => {
+        const { results } = res;
+        this.setState({ characters: results });
+      });
+    }
   };
 
   componentDidMount() {
@@ -36,7 +44,7 @@ export default class Home extends Component<IProps, IState> {
     const { characters } = this.state;
     return (
       <main className="main">
-        <SearchBar /* handler={this.handleSearch} */ />
+        <SearchBar handler={this.handleSearch} />
         {!characters.length ? <Spinner /> : <CardList data={characters} />}
       </main>
     );

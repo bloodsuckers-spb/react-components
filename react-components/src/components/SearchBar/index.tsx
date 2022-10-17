@@ -1,24 +1,21 @@
 import React, { Component } from 'react';
 import './index.css';
-import { SearchBarProps, SearchBarState } from './interfaces';
+import { IProps, IState } from './interfaces';
 
-export default class SearchBar extends Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
+export default class SearchBar extends Component<IProps, IState> {
+  handleSubmit;
+  constructor(props: IProps) {
     super(props);
     this.state = {
       searchValue: localStorage.getItem('searchValue') || '',
     };
+    this.handleSubmit = props.handler;
   }
 
   componentWillUnmount() {
     const { searchValue } = this.state;
     localStorage.setItem('searchValue', searchValue);
   }
-
-  handleClick = () => {
-    const { searchValue } = this.state;
-    localStorage.setItem('searchValue', searchValue);
-  };
 
   render() {
     const { searchValue } = this.state;
@@ -27,7 +24,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
       this.setState({ searchValue: value });
     };
     return (
-      <form id="search-form" action="/" method="get">
+      <form id="search-form" action="/" method="get" onSubmit={this.handleSubmit}>
         <label htmlFor="search-bar">
           <span className="visually-hidden">Search</span>
         </label>
@@ -40,9 +37,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
           value={searchValue}
           onChange={onChangeHandler}
         />
-        <button type="button" onClick={this.handleClick}>
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
     );
   }

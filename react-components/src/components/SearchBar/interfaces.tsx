@@ -1,5 +1,9 @@
-export type SearchBarProps = Record<string, never>;
+import { FormEvent } from 'react';
 
-export interface SearchBarState {
+export interface IProps {
+  handler: (e: FormEvent) => void;
+}
+
+export interface IState {
   searchValue: string;
 }
