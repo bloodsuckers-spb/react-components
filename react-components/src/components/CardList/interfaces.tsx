@@ -1,5 +1,5 @@
-import { IFormCards } from '../../types';
+import { ICaracter } from 'pages/Home/interfaces';
 
 export interface IProps {
-  cards: IFormCards[];
+  data: ICaracter[];
 }

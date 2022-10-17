@@ -1,10 +1,5 @@
-interface IData {
-  name: string;
-  img: string;
-  breed: string;
-  description: string;
-}
+import { ICaracter } from 'pages/Home/interfaces';
 
-export interface CardProps {
-  data: IData;
+export interface IProps {
+  data: ICaracter;
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './index.css';
 import { SearchBarProps, SearchBarState } from './interfaces';
 
 export default class SearchBar extends Component<SearchBarProps, SearchBarState> {
@@ -26,7 +27,7 @@ export default class SearchBar extends Component<SearchBarProps, SearchBarState>
       this.setState({ searchValue: value });
     };
     return (
-      <form action="/" method="get">
+      <form id="search-form" action="/" method="get">
         <label htmlFor="search-bar">
           <span className="visually-hidden">Search</span>
         </label>

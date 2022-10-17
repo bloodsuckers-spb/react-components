@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import './index.css';
 import { IProps, IState } from './interfaces';
 import { IFormCards } from '../../types/index';
+import FormCardList from 'components/FormCardList';
 import Form from 'components/Form';
-import CardList from 'components/CardList';
 import formData from '../../constants/formData';
 
 export default class Forms extends Component<IProps, IState> {
@@ -23,7 +23,7 @@ export default class Forms extends Component<IProps, IState> {
     return (
       <main className="main">
         <Form data={formData} addCard={this.addCard} />
-        {!!cards.length && <CardList cards={cards} />}
+        {!cards.length && <FormCardList data={cards} />}
       </main>
     );
   }

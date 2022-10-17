@@ -1,17 +1,18 @@
 import React from 'react';
+import './index.css';
 import { IProps } from 'components/CardList/interfaces';
-import FormCard from 'components/FormCard';
+import Card from 'components/Card';
 
-const CardList = ({ cards }: IProps) => {
+function CardList({ data }: IProps) {
   return (
-    <ul className="card-list">
-      {cards.map((card, i) => (
+    <ul className="card-list" role="card-list">
+      {data.map((card, i) => (
         <li key={i}>
-          <FormCard key={i} data={card} />
+          <Card key={i} data={card} />
         </li>
       ))}
     </ul>
   );
-};
+}
 
 export default CardList;

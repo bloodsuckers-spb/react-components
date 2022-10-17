@@ -1,20 +1,44 @@
-import React from 'react';
-import SearchBar from '../../components/SearchBar';
-import Card from 'components/Card';
+import React, { Component } from 'react';
 import './index.css';
-import { data } from '../../constants/data';
+import { IProps, IState } from './interfaces';
+import Spinner from '../../components/Spinner';
+import SearchBar from '../../components/SearchBar';
+import CardList from '../../components/CardList';
+import FetchAPI from '../../common/FetchAPI';
 
-const Home = () => {
-  return (
-    <main className="main">
-      <SearchBar />
-      <ul className="cards" role="cards-list">
-        {data.map((data, i) => (
-          <li key={i}>{<Card data={data} />}</li>
-        ))}
-      </ul>
-    </main>
-  );
-};
+export default class Home extends Component<IProps, IState> {
+  constructor(props = {}) {
+    super(props);
+    const characters = localStorage.getItem('characters') || '';
+    this.state = {
+      characters: characters ? JSON.parse(characters) : [],
+    };
+  }
 
-export default Home;
+  handleSearch = () => {
+    console.log('handleSearch');
+  };
+
+  componentDidMount() {
+    FetchAPI.getData().then((res) => {
+      const { results } = res;
+      this.setState({ characters: results });
+    });
+  }
+
+  componentWillUnmount() {
+    const { characters } = this.state;
+    const str = characters.length ? JSON.stringify(characters) : '';
+    localStorage.setItem('characters', str);
+  }
+
+  render() {
+    const { characters } = this.state;
+    return (
+      <main className="main">
+        <SearchBar /* handler={this.handleSearch} */ />
+        {!characters.length ? <Spinner /> : <CardList data={characters} />}
+      </main>
+    );
+  }
+}
