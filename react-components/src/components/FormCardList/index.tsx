@@ -1,15 +1,18 @@
 import React from 'react';
-import FormCard from 'components/FormCard';
+import './index.css';
 import { IProps } from './interfaces';
+import FormCard from 'components/FormCard';
 
-function FormCardList({ data }: IProps) {
+const FormCardList = ({ data }: IProps) => {
   return (
     <ul className="card-list" role="card-list">
       {data.map((card, i) => (
-        <FormCard key={i} data={card} />
+        <li key={i}>
+          <FormCard key={i} data={card} />
+        </li>
       ))}
     </ul>
   );
-}
+};
 
 export default FormCardList;

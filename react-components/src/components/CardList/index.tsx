@@ -1,25 +1,44 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './index.css';
-import { IProps } from 'components/CardList/interfaces';
-import { ICaracter } from 'pages/Home/interfaces';
-import { IFormCards } from 'types';
+import { IProps, IState } from 'components/CardList/interfaces';
 import Card from 'components/Card';
-import FormCard from 'components/FormCard';
+import Modal from 'components/Modal';
 
-const isType = (data: ICaracter | IFormCards): data is ICaracter => {
-  return 'species' in data;
-};
+class CardList extends Component<IProps, IState> {
+  data;
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      isModal: false,
+      content: '',
+    };
+    this.data = props.data;
+  }
 
-const CardList = ({ data }: IProps) => {
-  return (
-    <ul className="card-list" role="card-list">
-      {data.map((card, i) => (
-        <li key={i}>
-          {isType(card) ? <Card key={i} data={card} /> : <FormCard key={i} data={card} />}
-        </li>
-      ))}
-    </ul>
-  );
-};
+  openModal = (arg: string) => {
+    this.setState({ isModal: true, content: arg });
+  };
+
+  closeModal = () => {
+    this.setState({ isModal: false });
+  };
+
+  render() {
+    const { isModal, content } = this.state;
+    return isModal ? (
+      <Modal handler={this.closeModal} content={content} />
+    ) : (
+      <ul className="card-list" role="card-list">
+        {!this.data.length
+          ? 'Sorry, There is nothing found'
+          : this.data.map((card, i) => (
+              <li key={i}>
+                <Card key={i} data={card} handler={this.openModal} />
+              </li>
+            ))}
+      </ul>
+    );
+  }
+}
 
 export default CardList;

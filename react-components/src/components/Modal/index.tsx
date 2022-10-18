@@ -1,7 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
+import './index.css';
+import { IProps } from './interfaces';
 
-export default class Modal extends Component {
-  render() {
-    return <div>Hello Modal</div>;
-  }
-}
+const Modal = ({ handler, content }: IProps) => {
+  return (
+    <div className="modal" onClick={handler}>
+      <div className="overlay">
+        <div className="modal-window">{content}</div>
+      </div>
+    </div>
+  );
+};
+
+export default Modal;

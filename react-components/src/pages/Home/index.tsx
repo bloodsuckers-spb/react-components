@@ -12,40 +12,46 @@ export default class Home extends Component<IProps, IState> {
     const characters = localStorage.getItem('characters') || '';
     this.state = {
       characters: characters ? JSON.parse(characters) : [],
+      isLoading: false,
     };
   }
 
-  handleSearch = (event: FormEvent) => {
+  handleSearch = async (event: FormEvent) => {
     event.preventDefault();
+    this.setState({ isLoading: true });
     const { target } = event;
     if (target instanceof HTMLFormElement) {
       const { value } = target['search-bar'];
-      FetchAPI.getData(value).then((res) => {
-        const { results } = res;
-        this.setState({ characters: results });
+      FetchAPI.getData(value).then((response) => {
+        const characters = response.results ? response.results : [];
+        this.setState({ characters, isLoading: false });
       });
     }
   };
 
   componentDidMount() {
-    FetchAPI.getData().then((res) => {
-      const { results } = res;
-      this.setState({ characters: results });
-    });
+    const { characters } = this.state;
+    if (!characters.length) {
+      FetchAPI.getData().then((response) => {
+        const { results } = response;
+        this.setState({ characters: results });
+      });
+    }
   }
 
   componentWillUnmount() {
+    console.clear();
     const { characters } = this.state;
     const str = characters.length ? JSON.stringify(characters) : '';
     localStorage.setItem('characters', str);
   }
 
   render() {
-    const { characters } = this.state;
+    const { isLoading, characters } = this.state;
     return (
       <main className="main">
         <SearchBar handler={this.handleSearch} />
-        {!characters.length ? <Spinner /> : <CardList data={characters} />}
+        {isLoading ? <Spinner /> : <CardList data={characters} />}
       </main>
     );
   }

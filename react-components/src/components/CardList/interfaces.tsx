@@ -1,6 +1,10 @@
 import { ICaracter } from 'pages/Home/interfaces';
-import { IFormCards } from 'types';
 
 export interface IProps {
-  data: ICaracter[] | IFormCards[];
+  data: ICaracter[];
+}
+
+export interface IState {
+  isModal: boolean;
+  content: string;
 }
