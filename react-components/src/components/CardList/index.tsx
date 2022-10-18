@@ -10,13 +10,13 @@ class CardList extends Component<IProps, IState> {
     super(props);
     this.state = {
       isModal: false,
-      content: '',
+      id: 0,
     };
     this.data = props.data;
   }
 
-  openModal = (arg: string) => {
-    this.setState({ isModal: true, content: arg });
+  openModal = (id: number) => {
+    this.setState({ isModal: true, id });
   };
 
   closeModal = () => {
@@ -24,16 +24,16 @@ class CardList extends Component<IProps, IState> {
   };
 
   render() {
-    const { isModal, content } = this.state;
+    const { isModal, id } = this.state;
     return isModal ? (
-      <Modal handler={this.closeModal} content={content} />
+      <Modal handler={this.closeModal} card={this.data[id]} />
     ) : (
       <ul className="card-list" role="card-list">
         {!this.data.length
           ? 'Sorry, There is nothing found'
           : this.data.map((card, i) => (
               <li key={i}>
-                <Card key={i} data={card} handler={this.openModal} />
+                <Card key={i} id={i} data={card} handler={this.openModal} />
               </li>
             ))}
       </ul>

@@ -6,5 +6,5 @@ export interface IProps {
 
 export interface IState {
   isModal: boolean;
-  content: string;
+  id: number;
 }

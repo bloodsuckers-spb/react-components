@@ -4,7 +4,7 @@ import { IProps, IState } from './interfaces';
 import Spinner from '../../components/Spinner';
 import SearchBar from '../../components/SearchBar';
 import CardList from '../../components/CardList';
-import FetchAPI from '../../common/FetchAPI';
+import FetchAPI from '../../services/FetchAPI';
 
 export default class Home extends Component<IProps, IState> {
   constructor(props = {}) {

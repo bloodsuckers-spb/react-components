@@ -23,8 +23,6 @@ export default class SearchBar extends Component<IProps, IState> {
   };
 
   render() {
-    const { searchValue } = this.state;
-
     return (
       <form id="search-form" action="/" method="get" onSubmit={this.handleSubmit}>
         <label htmlFor="search-bar">
@@ -36,7 +34,7 @@ export default class SearchBar extends Component<IProps, IState> {
           placeholder="Search"
           autoComplete="off"
           autoFocus={true}
-          value={searchValue}
+          value={this.state.searchValue}
           onChange={this.handleChange}
         />
         <button type="submit">Search</button>

@@ -1,4 +1,6 @@
+import { ICaracter } from 'pages/Home/interfaces';
+
 export interface IProps {
   handler: () => void;
-  content: string;
+  card: ICaracter;
 }
