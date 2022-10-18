@@ -39,6 +39,24 @@
   align-items: center;
 }
 
+.modal-close-icon {
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: -25px;
+  left: 270px;
+  width: 20px;
+  height: 20px;
+  background: url('./cross.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.modal-close-icon:hover {
+  transform: scale(110%);
+  transition: all 0.3s;
+}
+
 @keyframes fadeInDown {
   0% {
     opacity: 0;
