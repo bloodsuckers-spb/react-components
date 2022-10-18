@@ -17,12 +17,16 @@ export default class Home extends Component<IProps, IState> {
     };
   }
 
-  handleSearch = async (event: FormEvent) => {
+  handleSearch = (event: FormEvent) => {
     event.preventDefault();
     this.setState({ isLoading: true });
     const { target } = event;
     if (!(target instanceof HTMLFormElement)) return;
     const { value } = target['search-bar'];
+    this.getData(value);
+  };
+
+  getData = (value: string) => {
     axios
       .get(`${charactersLink}?name=${value}`)
       .then((response) => {

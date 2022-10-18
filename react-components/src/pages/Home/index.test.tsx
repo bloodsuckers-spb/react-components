@@ -1,6 +1,22 @@
-// import React from 'react';
+import React from 'react';
+import axios from 'axios';
+import { render, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Home from './index';
+
+jest.mock('axios');
+
+// const hits = [
+
+// ];
+
+// describe('Home', () => {
+//   it('fetches smth from an API', async () => {
+//     axios.get.mockImplementationOnce(() => Promise.resolve({ data: { hits } }));
+//   });
+// });
+
 // import { render, screen } from '@testing-library/react';
-// import Home from '.';
 
 // test('render Cards', () => {
 //   render(<Home />);
