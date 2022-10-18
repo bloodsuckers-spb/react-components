@@ -30,11 +30,13 @@ export default class Home extends Component<IProps, IState> {
   };
 
   componentDidMount() {
+    console.log('componentDidMount');
     const { characters } = this.state;
     if (!characters.length) {
+      this.setState({ isLoading: true });
       FetchAPI.getData().then((response) => {
         const { results } = response;
-        this.setState({ characters: results });
+        this.setState({ characters: results, isLoading: false });
       });
     }
   }
