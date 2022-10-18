@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 import './index.css';
 import { IProps, IState } from './interfaces';
 
@@ -17,12 +17,14 @@ export default class SearchBar extends Component<IProps, IState> {
     localStorage.setItem('searchValue', searchValue);
   }
 
+  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.currentTarget;
+    this.setState({ searchValue: value });
+  };
+
   render() {
     const { searchValue } = this.state;
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.currentTarget;
-      this.setState({ searchValue: value });
-    };
+
     return (
       <form id="search-form" action="/" method="get" onSubmit={this.handleSubmit}>
         <label htmlFor="search-bar">
@@ -35,7 +37,7 @@ export default class SearchBar extends Component<IProps, IState> {
           autoComplete="off"
           autoFocus={true}
           value={searchValue}
-          onChange={onChangeHandler}
+          onChange={this.handleChange}
         />
         <button type="submit">Search</button>
       </form>
