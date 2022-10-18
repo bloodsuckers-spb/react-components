@@ -1,10 +1,11 @@
 import React, { Component, FormEvent } from 'react';
 import './index.css';
 import { IProps, IState } from './interfaces';
+import axios from 'axios';
 import Spinner from '../../components/Spinner';
 import SearchBar from '../../components/SearchBar';
 import CardList from '../../components/CardList';
-import FetchAPI from '../../services/FetchAPI';
+import { charactersLink } from '../../constants/API';
 
 export default class Home extends Component<IProps, IState> {
   constructor(props = {}) {
@@ -20,25 +21,28 @@ export default class Home extends Component<IProps, IState> {
     event.preventDefault();
     this.setState({ isLoading: true });
     const { target } = event;
-    if (target instanceof HTMLFormElement) {
-      const { value } = target['search-bar'];
-      FetchAPI.getData(value).then((response) => {
-        const characters = response.results ? response.results : [];
-        this.setState({ characters, isLoading: false });
+    if (!(target instanceof HTMLFormElement)) return;
+    const { value } = target['search-bar'];
+    axios
+      .get(`${charactersLink}?name=${value}`)
+      .then((response) => {
+        const { results } = response.data;
+        this.setState({ characters: results, isLoading: false });
+      })
+      .catch((error) => {
+        console.warn(error);
+        this.setState({ characters: [], isLoading: false });
       });
-    }
   };
 
   componentDidMount() {
-    console.log('componentDidMount');
     const { characters } = this.state;
-    if (!characters.length) {
-      this.setState({ isLoading: true });
-      FetchAPI.getData().then((response) => {
-        const { results } = response;
-        this.setState({ characters: results, isLoading: false });
-      });
-    }
+    if (characters.length) return;
+    this.setState({ isLoading: true });
+    axios.get(charactersLink).then((response) => {
+      const { results } = response.data;
+      this.setState({ characters: results, isLoading: false });
+    });
   }
 
   componentWillUnmount() {
