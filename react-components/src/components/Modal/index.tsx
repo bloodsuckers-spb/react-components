@@ -8,11 +8,11 @@ const Modal = ({ handler, card }: IProps) => {
     event.stopPropagation();
   };
   return (
-    <div className="modal" onClick={handler}>
-      <div className="overlay">
+    <div className="modal" role="modal" onClick={handler}>
+      <div className="overlay" role={'overlay'}>
         <div className="modal-window" onClick={handleClick}>
-          <div className="modal-close-icon" onClick={handler}></div>
-          <img className="card-img" src={image} />
+          <div className="modal-close-icon" role={'modal-close-btn'} onClick={handler}></div>
+          <img className="card-img" src={image} alt={''} />
           <h4>{name}</h4>
           <p className="gender">{gender}</p>
           <p>{species}</p>
