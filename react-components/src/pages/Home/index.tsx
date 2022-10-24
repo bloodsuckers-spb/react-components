@@ -59,7 +59,7 @@ export default class Home extends Component<IProps, IState> {
   render() {
     const { isLoading, characters } = this.state;
     return (
-      <main className="main">
+      <main className="main" data-testid={'home'}>
         <SearchBar handler={this.handleSearch} />
         {isLoading ? <Spinner /> : <CardList data={characters} />}
       </main>

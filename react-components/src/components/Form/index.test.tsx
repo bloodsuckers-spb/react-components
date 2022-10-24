@@ -4,7 +4,7 @@ import Form from './index';
 
 import formData from '../../constants/formData';
 
-const cb = () => {};
+const cb = jest.fn();
 
 describe('form test', () => {
   it('Form renders properly', () => {
