@@ -1,28 +1,9 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Modal from './index';
+import { results } from 'mocks/constants';
 
-const cardData = {
-  id: 1,
-  name: '',
-  status: '',
-  species: '',
-  type: '',
-  gender: '',
-  origin: {
-    name: '',
-    url: '',
-  },
-  location: {
-    name: '',
-    url: '',
-  },
-  image: '',
-  episode: [''],
-  url: '',
-  created: '',
-};
-
+const [cardData] = results;
 const handler = jest.fn();
 
 describe('tests for Modal window', () => {
