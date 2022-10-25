@@ -2,13 +2,12 @@ import React from 'react';
 import './index.css';
 import { IProps } from './interfaces';
 
-const FormCard = ({ data }: IProps) => {
-  const { switcher, firstName, lastName, country, profilePic, bornDate } = data;
+const FormCard = ({ data: { bornDate, switcher, country, profilePic, ...rest } }: IProps) => {
+  const { firstName, lastName } = rest;
+  const title = `${firstName} ${lastName}`;
   return (
     <div className="card form-card" data-testid="form-card">
-      <h3>
-        {firstName} {lastName}
-      </h3>
+      <h3>{title}</h3>
       <p>Born: {bornDate}</p>
       <p>Sex: {switcher}</p>
       <p>Country: {country}</p>
