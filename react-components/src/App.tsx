@@ -7,13 +7,13 @@ import AppHeader from 'components/AppHeader';
 
 import { routes } from './constants/routes';
 
-function App() {
+const App = () => {
   return (
     <BrowserRouter>
       <AppHeader />
       <AppRoutes routes={routes} />
     </BrowserRouter>
   );
-}
+};
 
 export default App;

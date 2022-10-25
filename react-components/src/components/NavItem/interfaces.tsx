@@ -10,8 +10,6 @@ interface IAttributes {
   className: string;
 }
 
-interface NavItemProps {
+export interface IProps {
   data: INavLinkData;
 }
-
-export default NavItemProps;
