@@ -21,8 +21,7 @@ export default class Home extends Component<IProps, IState> {
     event.preventDefault();
     this.setState({ isLoading: true });
     const { target } = event;
-    if (!(target instanceof HTMLFormElement)) return;
-    const { value } = target['search-bar'];
+    const { value } = target instanceof HTMLFormElement && target['search-bar'];
     this.getData(value);
   };
 

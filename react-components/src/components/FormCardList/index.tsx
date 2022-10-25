@@ -8,7 +8,7 @@ const FormCardList = ({ data }: IProps) => {
     <ul className="card-list" role="card-list">
       {data.map((card, i) => (
         <li key={i}>
-          <FormCard key={i} data={card} />
+          <FormCard data={card} />
         </li>
       ))}
     </ul>

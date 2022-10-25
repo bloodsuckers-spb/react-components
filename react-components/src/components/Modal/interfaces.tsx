@@ -1,6 +1,6 @@
 import { ICaracter } from 'pages/Home/interfaces';
 
 export interface IProps {
-  handler: () => void;
+  openModalHandler: () => void;
   card: ICaracter;
 }

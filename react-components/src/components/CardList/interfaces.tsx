@@ -5,6 +5,6 @@ export interface IProps {
 }
 
 export interface IState {
-  isModal: boolean;
-  id: number;
+  isModalOpen: boolean;
+  cardId: number | null;
 }
