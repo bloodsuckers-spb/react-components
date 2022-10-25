@@ -1,30 +1,26 @@
-import React, { Component } from 'react';
-import './index.css';
-import { IProps, IState } from './interfaces';
-import { IFormCards } from '../../types/index';
+import React, { useState } from 'react';
+
 import FormCardList from 'components/FormCardList';
 import Form from 'components/Form';
+
+import './index.css';
+
 import formData from '../../constants/formData';
 
-export default class Forms extends Component<IProps, IState> {
-  constructor(props = {}) {
-    super(props);
-    this.state = {
-      cards: [],
-    };
-  }
+import { ICards } from './interfaces';
+import { IFormCards } from '../../types';
 
-  addCard = (data: IFormCards) => {
-    this.setState((state) => ({ cards: [...state.cards, data] }));
-  };
+const Forms = () => {
+  const [cards, setCards] = useState<ICards>([]);
 
-  render() {
-    const { cards } = this.state;
-    return (
-      <main className="main">
-        <Form data={formData} addCard={this.addCard} />
-        {!!cards.length && <FormCardList data={cards} />}
-      </main>
-    );
-  }
-}
+  const addCard = (data: IFormCards) => setCards((cards) => [...cards, data]);
+
+  return (
+    <main className="main">
+      <Form data={formData} addCard={addCard} />
+      {!!cards.length && <FormCardList data={cards} />}
+    </main>
+  );
+};
+
+export default Forms;
