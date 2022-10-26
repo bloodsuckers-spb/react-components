@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import AppRoutesProps from './interface';
+
+import { AppRoutesProps } from './interface';
 
 const AppRoutes = ({ routes }: AppRoutesProps) => {
   return (

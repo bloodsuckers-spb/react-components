@@ -4,7 +4,4 @@ export interface IProps {
   data: ICaracter[];
 }
 
-export interface IState {
-  isModalOpen: boolean;
-  cardId: number | null;
-}
+export type TCardId = number | null;

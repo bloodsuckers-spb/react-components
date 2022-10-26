@@ -1,5 +1,7 @@
 import React, { MouseEvent } from 'react';
+
 import './index.css';
+
 import { IProps } from './interfaces';
 
 const Modal = ({ openModalHandler, card: { name, image, gender, species } }: IProps) => {

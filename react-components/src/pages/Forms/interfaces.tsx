@@ -1,3 +1,3 @@
 import { IFormCards } from '../../types';
 
-export type ICards = IFormCards[];
+export type TCards = IFormCards[];

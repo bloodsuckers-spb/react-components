@@ -1,7 +1,10 @@
 import React from 'react';
-import './index.css';
-import { navLinkData } from 'constants/navLinkData';
+
 import NavItem from 'components/NavItem';
+
+import './index.css';
+
+import { navLinkData } from 'constants/navLinkData';
 
 const Navigation = () => {
   return (

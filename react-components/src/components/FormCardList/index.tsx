@@ -1,7 +1,10 @@
 import React from 'react';
-import './index.css';
-import { IProps } from './interfaces';
+
 import FormCard from 'components/FormCard';
+
+import './index.css';
+
+import { IProps } from './interfaces';
 
 const FormCardList = ({ data }: IProps) => {
   return (

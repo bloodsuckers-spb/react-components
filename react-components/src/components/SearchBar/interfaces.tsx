@@ -1,9 +1,7 @@
-import { FormEvent } from 'react';
+import { FormEvent, ChangeEvent } from 'react';
 
 export interface IProps {
-  handler: (e: FormEvent) => void;
+  handleSearch: (e: FormEvent) => void;
 }
 
-export interface IState {
-  searchValue: string;
-}
+export type TSearchBarChange = ChangeEvent<HTMLInputElement>;

@@ -1,5 +1,7 @@
 import React from 'react';
+
 import './index.css';
+
 import { IProps } from './interfaces';
 
 const FormCard = ({ data: { bornDate, switcher, country, profilePic, ...rest } }: IProps) => {

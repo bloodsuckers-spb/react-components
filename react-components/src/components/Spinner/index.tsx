@@ -1,6 +1,8 @@
 import React from 'react';
-import './index.css';
+
 import { PropagateLoader } from 'react-spinners';
+
+import './index.css';
 
 const Spinner = () => (
   <div className="spinner">

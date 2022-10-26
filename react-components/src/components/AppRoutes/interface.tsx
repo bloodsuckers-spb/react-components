@@ -3,6 +3,6 @@ interface IRoutes {
   element: JSX.Element;
 }
 
-export default interface AppRoutesProps {
+export interface AppRoutesProps {
   routes: IRoutes[];
 }

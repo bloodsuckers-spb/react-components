@@ -7,11 +7,11 @@ import './index.css';
 
 import formData from '../../constants/formData';
 
-import { ICards } from './interfaces';
+import { TCards } from './interfaces';
 import { IFormCards } from '../../types';
 
 const Forms = () => {
-  const [cards, setCards] = useState<ICards>([]);
+  const [cards, setCards] = useState<TCards>([]);
 
   const addCard = (data: IFormCards) => setCards((cards) => [...cards, data]);
 

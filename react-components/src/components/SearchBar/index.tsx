@@ -1,44 +1,35 @@
-import React, { Component, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import './index.css';
-import { IProps, IState } from './interfaces';
 
-export default class SearchBar extends Component<IProps, IState> {
-  handleSubmit;
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      searchValue: localStorage.getItem('searchValue') || '',
-    };
-    this.handleSubmit = props.handler;
-  }
+import { IProps, TSearchBarChange } from './interfaces';
 
-  componentWillUnmount() {
-    const { searchValue } = this.state;
+const SearchBar = ({ handleSearch }: IProps) => {
+  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('searchValue') || '');
+
+  useEffect(() => {
     localStorage.setItem('searchValue', searchValue);
-  }
+  }, [searchValue]);
 
-  handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.currentTarget;
-    this.setState({ searchValue: value });
-  };
+  const handleChange = ({ target }: TSearchBarChange) => setSearchValue(target.value);
 
-  render() {
-    return (
-      <form id="search-form" action="/" method="get" onSubmit={this.handleSubmit}>
-        <label htmlFor="search-bar">
-          <span className="visually-hidden">Search</span>
-        </label>
-        <input
-          type="text"
-          id="search-bar"
-          placeholder="Search"
-          autoComplete="off"
-          autoFocus={true}
-          value={this.state.searchValue}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Search</button>
-      </form>
-    );
-  }
-}
+  return (
+    <form id="search-form" action="/" method="get" onSubmit={handleSearch}>
+      <label htmlFor="search-bar">
+        <span className="visually-hidden">Search</span>
+      </label>
+      <input
+        type="text"
+        id="search-bar"
+        placeholder="Search"
+        autoComplete="off"
+        autoFocus={true}
+        value={searchValue}
+        onChange={handleChange}
+      />
+      <button type="submit">Search</button>
+    </form>
+  );
+};
+
+export default SearchBar;

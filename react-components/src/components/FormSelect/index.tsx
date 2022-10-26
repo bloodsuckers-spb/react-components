@@ -1,6 +1,8 @@
 import React from 'react';
-import { IProps } from './interfaces';
+
 import countriesOptions from 'constants/countryOptions';
+
+import { IProps } from './interfaces';
 
 const FormSelect = ({ data, isError, handler }: IProps) => {
   const { id, title, errorMessage, className } = data;

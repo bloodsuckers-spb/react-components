@@ -1,5 +1,7 @@
 import React from 'react';
+
 import './index.css';
+
 import { IProps } from './interfaces';
 
 const Card = ({ data: { image, name, gender, species }, handler, id }: IProps) => {

@@ -7,7 +7,7 @@ import SearchBar from '../../components/SearchBar';
 import CardList from '../../components/CardList';
 import { charactersLink } from '../../constants/API';
 
-export default class Home extends Component<IProps, IState> {
+class Home extends Component<IProps, IState> {
   constructor(props = {}) {
     super(props);
     const characters = localStorage.getItem('characters') || '';
@@ -59,9 +59,11 @@ export default class Home extends Component<IProps, IState> {
     const { isLoading, characters } = this.state;
     return (
       <main className="main" data-testid={'home'}>
-        <SearchBar handler={this.handleSearch} />
+        <SearchBar handleSearch={this.handleSearch} />
         {isLoading ? <Spinner /> : <CardList data={characters} />}
       </main>
     );
   }
 }
+
+export default Home;

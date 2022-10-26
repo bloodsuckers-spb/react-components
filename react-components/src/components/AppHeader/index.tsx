@@ -1,7 +1,8 @@
 import React from 'react';
-import './index.css';
 
 import Navigation from '../Navigation';
+
+import './index.css';
 
 const AppHeader = () => {
   return (
