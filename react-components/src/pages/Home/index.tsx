@@ -1,69 +1,64 @@
-import React, { Component, FormEvent } from 'react';
-import './index.css';
-import { IProps, IState } from './interfaces';
+import React, { useState, useEffect, FormEvent } from 'react';
 import axios from 'axios';
+
 import Spinner from '../../components/Spinner';
 import SearchBar from '../../components/SearchBar';
 import CardList from '../../components/CardList';
+
+import './index.css';
+
 import { charactersLink } from '../../constants/API';
 
-class Home extends Component<IProps, IState> {
-  constructor(props = {}) {
-    super(props);
-    const characters = localStorage.getItem('characters') || '';
-    this.state = {
-      characters: characters ? JSON.parse(characters) : [],
-      isLoading: false,
-    };
-  }
+import { TCharacters } from './interfaces';
 
-  handleSearch = (event: FormEvent) => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
-    const { target } = event;
-    const { value } = target instanceof HTMLFormElement && target['search-bar'];
-    this.getData(value);
-  };
+const Home = () => {
+  const storageData = localStorage.getItem('characters') || '';
+  const [characters, setCharacters] = useState<TCharacters>(
+    storageData ? JSON.parse(storageData) : []
+  );
+  const [isLoading, setLoadingState] = useState(false);
+  const isResponseEmpty = !!localStorage.getItem('isFirstLoad');
 
-  getData = (value: string) => {
+  useEffect(() => {
+    if (!characters.length && !isResponseEmpty) {
+      getData();
+      localStorage.setItem('isFirstLoad', `true`);
+    }
+  }, [isResponseEmpty, characters]);
+
+  const getData = (value?: string) => {
+    setLoadingState(true);
+    const url = value ? `${charactersLink}?name=${value}` : charactersLink;
     axios
-      .get(`${charactersLink}?name=${value}`)
+      .get(url)
       .then((response) => {
         const { results } = response.data;
-        this.setState({ characters: results, isLoading: false });
+        setCharacters(results);
+        localStorage.setItem('characters', JSON.stringify(results));
       })
       .catch((error) => {
         console.warn(error);
-        this.setState({ characters: [], isLoading: false });
+        setCharacters([]);
+        localStorage.setItem('characters', '');
+      })
+      .finally(() => {
+        setLoadingState(false);
       });
   };
 
-  componentDidMount() {
-    const { characters } = this.state;
-    if (characters.length) return;
-    this.setState({ isLoading: true });
-    axios.get(charactersLink).then((response) => {
-      const { results } = response.data;
-      this.setState({ characters: results, isLoading: false });
-    });
-  }
+  const handleSearch = (event: FormEvent) => {
+    event.preventDefault();
+    const { target } = event;
+    const { value } = target instanceof HTMLFormElement && target['search-bar'];
+    getData(value);
+  };
 
-  componentWillUnmount() {
-    console.clear();
-    const { characters } = this.state;
-    const str = characters.length ? JSON.stringify(characters) : '';
-    localStorage.setItem('characters', str);
-  }
-
-  render() {
-    const { isLoading, characters } = this.state;
-    return (
-      <main className="main" data-testid={'home'}>
-        <SearchBar handleSearch={this.handleSearch} />
-        {isLoading ? <Spinner /> : <CardList data={characters} />}
-      </main>
-    );
-  }
-}
+  return (
+    <main className="main" data-testid={'home'}>
+      <SearchBar handleSearch={handleSearch} />
+      {isLoading ? <Spinner /> : <CardList data={characters} />}
+    </main>
+  );
+};
 
 export default Home;

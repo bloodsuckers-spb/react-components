@@ -1,9 +1,4 @@
-export type IProps = Record<string, never>;
-
-export interface IState {
-  characters: ICaracter[];
-  isLoading: boolean;
-}
+export type TCharacters = ICaracter[];
 
 export interface IResponse {
   info: IResInfo;
