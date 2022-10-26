@@ -5,7 +5,7 @@ import './index.css';
 import { IProps, TSearchBarChange } from './interfaces';
 
 const SearchBar = ({ handleSearch }: IProps) => {
-  const [searchValue, setSearchValue] = useState<string>(localStorage.getItem('searchValue') || '');
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('searchValue') || '');
 
   useEffect(() => {
     localStorage.setItem('searchValue', searchValue);
