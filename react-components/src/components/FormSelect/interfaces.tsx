@@ -1,7 +1,12 @@
 import { IFormData } from '../../types/index';
+import { UseFormRegisterReturn, FieldErrorsImpl } from 'react-hook-form';
 
 export interface IProps {
   data: IFormData;
-  isError: boolean;
-  handler: (event: React.FormEvent<HTMLSelectElement>) => void;
+  errors: Partial<
+    FieldErrorsImpl<{
+      [x: string]: string;
+    }>
+  >;
+  register: (id: string, type?: string) => UseFormRegisterReturn<string>;
 }

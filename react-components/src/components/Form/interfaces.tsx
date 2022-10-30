@@ -6,24 +6,12 @@ export interface IProps {
   data: IFormData[];
 }
 
-// export interface IState {
-//   isDisabled: boolean;
-//   errors: IErrors;
-// }
+export type TimeStamp = string | number;
 
-export interface IState {
-  isDisabled: boolean;
-  isValid: boolean;
-  errors: IError[];
+export interface IFormItems {
+  [key: string]: string;
 }
 
-export interface IError {
-  id: string;
-  isError: boolean;
+export interface ISubmit {
+  [key: string]: string | FileList;
 }
-
-// export interface IErrors {
-//   [key: string]: boolean;
-// }
-
-export type TFormEvent = React.FormEvent<HTMLInputElement | HTMLSelectElement>;

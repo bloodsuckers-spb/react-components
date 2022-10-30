@@ -4,7 +4,7 @@ import './index.css';
 
 import { IProps } from './interfaces';
 
-const FormInput = ({ data, isError, handler }: IProps) => {
+const FormInput = ({ data, errors, register }: IProps) => {
   const { id, placeholder, className, title, type, errorMessage } = data;
   return (
     <fieldset className={`fieldset-${className}`}>
@@ -14,9 +14,9 @@ const FormInput = ({ data, isError, handler }: IProps) => {
           className={className}
           id={id}
           type={type}
-          onChange={handler}
           autoComplete="off"
           placeholder={placeholder}
+          {...register(id, type)}
         />
         {type === 'checkbox' && (
           <span className={className}>
@@ -24,7 +24,7 @@ const FormInput = ({ data, isError, handler }: IProps) => {
           </span>
         )}
       </label>
-      {isError && <p className="error">{errorMessage}</p>}
+      {errors[id] && <p className="error">{errorMessage}</p>}
     </fieldset>
   );
 };

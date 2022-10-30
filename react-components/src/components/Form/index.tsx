@@ -1,158 +1,75 @@
-import React, { Component, FormEvent } from 'react';
-import './index.css';
-import { IProps, IState, TFormEvent, IError } from './interfaces';
-import { IFormCards, IFormData } from 'types/index';
+import React, { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
 import FormItem from 'components/FormItem';
+import getValidateMethod from '../../services/getValidateMethod';
 
-export default class Form extends Component<IProps, IState> {
-  private addCard;
-  private itemsData;
-  constructor(props: IProps) {
-    super(props);
-    this.state = {
-      isDisabled: true,
-      isValid: false,
-      errors: props.data.map((el) => ({ id: el.id, isError: false })),
-    };
-    this.itemsData = props.data;
-    this.addCard = props.addCard;
-  }
+import './index.css';
 
-  isErrors = () => {
-    const { errors } = this.state;
-    return errors.some((error) => error.isError);
+import { IProps, IFormItems, ISubmit } from './interfaces';
+
+const Form = ({ data, addCard }: IProps) => {
+  const [isDisabled, setBtnState] = useState(true);
+  const [isCardAdded, setCardState] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
+    reset,
+    resetField,
+  } = useForm<IFormItems>();
+
+  useEffect(() => {
+    if (!isSubmitted && isDirty) {
+      setBtnState(false);
+      setCardState(false);
+    }
+    if (isValid) {
+      setBtnState(false);
+    }
+  }, [isDirty, isSubmitted, isValid]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      setCardState(true);
+      resetField('confirm');
+      resetField('switcher');
+      reset();
+    }
+    setBtnState(true);
+  }, [isSubmitSuccessful, reset, resetField]);
+
+  const onSubmit = (data: ISubmit) => {
+    const file = data.profilePic[0];
+    addCard({
+      ...data,
+      switcher: getSwitchValue(!!data.confirm),
+      profilePic: file instanceof File ? getImgUrl(file) : '',
+    });
   };
 
-  getErrorsCount = () => {
-    const { errors } = this.state;
-    return errors.filter((error) => error.isError).length;
-  };
+  const setRegister = (id: string, type = 'text') =>
+    register(id, {
+      validate: getValidateMethod(id, type),
+    });
 
-  changeErrorState = (id: string, status: boolean) => {
-    const { errors } = this.state;
-    const index = errors.findIndex((error) => error.id === id);
-    errors[index].isError = status;
-    this.setState({ errors });
-  };
+  const getImgUrl = (elem: File | Blob) => URL.createObjectURL(elem);
 
-  getImgUrl = (elem: Blob) => {
-    return elem ? URL.createObjectURL(elem) : '';
-  };
-
-  getSwitchValue = (isChecked: boolean, values = ['Male', 'Female']) => {
+  const getSwitchValue = (isChecked: boolean, values = ['Male', 'Female']) => {
     const [checked, unchecked] = values;
     return !isChecked ? checked : unchecked;
   };
 
-  getValue = (form: HTMLFormElement, id: string, type?: string) => {
-    const input = form[id];
-    switch (type) {
-      case 'file':
-        return this.getImgUrl(input.files[0]);
-      case 'checkbox':
-        return id === 'switcher' ? this.getSwitchValue(input.checked) : input.checked;
-      default:
-        return input.value;
-    }
-  };
+  return (
+    <form className="form" onSubmit={handleSubmit(onSubmit)} data-testid="react-form">
+      {data.map((data, i) => {
+        return <FormItem key={i} data={data} errors={errors} register={setRegister} />;
+      })}
+      <input className="submit" type="submit" value="submit" disabled={isDisabled} />
+      {isCardAdded && <p className="confirm-message">The data has been saved</p>}
+    </form>
+  );
+};
 
-  validate = (value: string, type?: string) => {
-    switch (type) {
-      case 'text':
-        return !this.isTextInputValid(value);
-      case 'date':
-        return !this.isDateValid(value);
-      case 'file':
-        return !this.isFileValid(value);
-      case 'checkbox':
-        return !this.isConfirm(value);
-      default:
-        return !this.isSelectValid(value);
-    }
-  };
-
-  handleChange = (event: TFormEvent) => {
-    if (this.state.isValid) {
-      this.setState({ isValid: false, isDisabled: false });
-      return;
-    }
-    if (this.isErrors()) {
-      const { id } = event.currentTarget;
-      this.changeErrorState(id, false);
-      if (!this.getErrorsCount()) {
-        this.setState({ isDisabled: false });
-      }
-      return;
-    }
-    if (!this.isErrors() && this.state.isDisabled) {
-      this.setState({ isDisabled: false });
-    }
-  };
-
-  handleSubmit = (event: FormEvent) => {
-    event.preventDefault();
-    let isValid = true;
-    const errors: IError[] = [];
-    const cardData: IFormCards = {};
-    const { target } = event;
-    if (!(target instanceof HTMLFormElement)) return;
-    this.itemsData.forEach((data) => {
-      const { id, type } = data;
-      const value = this.getValue(target, id, type);
-      cardData[id] = value;
-      const isError = this.validate(value, type);
-      if (isError) isValid = false;
-      errors.push({ id, isError });
-    });
-    this.setState({ errors, isDisabled: true, isValid });
-    isValid && this.createCard(target, cardData);
-  };
-
-  isTextInputValid = (value: string) => {
-    return /^[A-Z][a-z]+|[А-Я][а-я]{2,10}$/.test(value);
-  };
-
-  isSelectValid = (value: string) => {
-    return !!value;
-  };
-
-  isDateValid = (value: string) => {
-    return /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(value) && Date.now() - Date.parse(value) > 0;
-  };
-
-  isFileValid = (value: string) => {
-    return !!value;
-  };
-
-  isConfirm = (value: string) => {
-    return !!value;
-  };
-
-  createCard = (form: HTMLFormElement, data: IFormCards) => {
-    this.addCard(data);
-    this.itemsData.forEach((el) => {
-      if (el.type === 'checkbox') form[el.id].checked = false;
-    });
-    form.reset();
-  };
-
-  hasError = ({ id }: IFormData) => {
-    const elem = this.state.errors.find((item) => item.id === id);
-    return !!elem?.isError;
-  };
-
-  render() {
-    const { isDisabled, isValid } = this.state;
-    const { handleChange, handleSubmit, itemsData } = this;
-    return (
-      <form className="form" onSubmit={handleSubmit} data-testid="react-form">
-        {itemsData.map((data, i) => {
-          const isError = this.hasError(data);
-          return <FormItem key={i} isError={isError} data={data} handler={handleChange} />;
-        })}
-        <input className="submit" type="submit" value="Submit" disabled={isDisabled} />
-        {isValid && <p className="confirm-message">The data has been saved</p>}
-      </form>
-    );
-  }
-}
+export default Form;
