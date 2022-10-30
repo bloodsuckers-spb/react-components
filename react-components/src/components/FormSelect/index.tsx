@@ -4,11 +4,11 @@ import countriesOptions from 'constants/countryOptions';
 
 import { IProps } from './interfaces';
 
-const FormSelect = ({ data: { id, title, errorMessage, className }, errors }: IProps) => {
+const FormSelect = ({ data: { id, title, errorMessage, className }, errors, register }: IProps) => {
   return (
     <fieldset className={`fieldset-${className}`}>
       <legend>{title}</legend>
-      <select id={id}>
+      <select id={id} {...register(id)}>
         {countriesOptions.map((item, i) => (
           <option key={i} value={i > 0 ? item : ''}>
             {item}

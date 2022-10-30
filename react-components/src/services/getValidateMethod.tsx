@@ -1,6 +1,6 @@
 import { TimeStamp } from './interfaces';
 
-const getValidateMethod = (id: string, type: string) => {
+const getValidateMethod = (id: string, type?: string) => {
   const isTextInputValid = (value: string) => /^[A-Z][a-z]+|[А-Я][а-я]{2,10}$/.test(value);
 
   const yearsOf = (date: TimeStamp) => new Date().getFullYear() - new Date(date).getFullYear();
@@ -11,10 +11,8 @@ const getValidateMethod = (id: string, type: string) => {
 
   const isConfirm = (value: string) => !!value;
 
-  const isSelectValid = (value: string) => {
-    console.log(value);
-    return value !== '-- Choose country --';
-  };
+  const isSelectValid = (value: string) =>
+    value !== '-- Choose country --' && !!value.trim().length;
 
   const isFileValid = (value: string) => !!value.length;
 

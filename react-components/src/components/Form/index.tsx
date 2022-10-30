@@ -15,9 +15,9 @@ const Form = ({ data, addCard }: IProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
     reset,
     resetField,
+    formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
   } = useForm<IFormItems>();
 
   useEffect(() => {
@@ -49,10 +49,11 @@ const Form = ({ data, addCard }: IProps) => {
     });
   };
 
-  const setRegister = (id: string, type = 'text') =>
-    register(id, {
+  const setRegister = (id: string, type?: string) => {
+    return register(id, {
       validate: getValidateMethod(id, type),
     });
+  };
 
   const getImgUrl = (elem: File | Blob) => URL.createObjectURL(elem);
 
