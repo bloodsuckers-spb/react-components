@@ -12,7 +12,7 @@ const CardList = ({ data }: IProps) => {
   const [cardId, setCardId] = useState<TCardId>(null);
 
   const openModal = (cardId: number) => {
-    setModalState(false);
+    setModalState(true);
     setCardId(cardId);
   };
 
