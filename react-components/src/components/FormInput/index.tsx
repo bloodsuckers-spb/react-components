@@ -2,9 +2,9 @@ import React from 'react';
 
 import './index.css';
 
-import { IProps } from './interfaces';
+import { IFormItem } from '../../types';
 
-const FormInput = ({ data, errors, register }: IProps) => {
+const FormInput = ({ data, errors, register }: IFormItem) => {
   const { id, placeholder, className, title, type, errorMessage } = data;
   return (
     <fieldset className={`fieldset-${className}`}>

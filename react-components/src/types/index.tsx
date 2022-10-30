@@ -1,3 +1,5 @@
+import { UseFormRegisterReturn, FieldErrorsImpl } from 'react-hook-form';
+
 export interface IFormData {
   id: string;
   tag?: string;
@@ -10,4 +12,14 @@ export interface IFormData {
 
 export interface IFormCards {
   [key: string]: string;
+}
+
+export interface IFormItem {
+  data: IFormData;
+  errors: Partial<
+    FieldErrorsImpl<{
+      [x: string]: string;
+    }>
+  >;
+  register: (id: string, type?: string) => UseFormRegisterReturn<string>;
 }

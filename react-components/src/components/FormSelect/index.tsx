@@ -2,9 +2,13 @@ import React from 'react';
 
 import countriesOptions from 'constants/countryOptions';
 
-import { IProps } from './interfaces';
+import { IFormItem } from '../../types/';
 
-const FormSelect = ({ data: { id, title, errorMessage, className }, errors, register }: IProps) => {
+const FormSelect = ({
+  data: { id, title, errorMessage, className },
+  errors,
+  register,
+}: IFormItem) => {
   return (
     <fieldset className={`fieldset-${className}`}>
       <legend>{title}</legend>
