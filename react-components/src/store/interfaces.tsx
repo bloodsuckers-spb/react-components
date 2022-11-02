@@ -1,7 +1,7 @@
 import { Dispatch } from 'react';
 import { ICaracter } from '../types';
 
-export type InitialStateType = {
+export type StoreStateType = {
   cards: ICaracter[];
 };
 
@@ -11,6 +11,6 @@ export type ActionType = {
 };
 
 export type CreateContextProps = {
-  state: InitialStateType;
+  state: StoreStateType;
   dispatch: Dispatch<ActionType>;
 };

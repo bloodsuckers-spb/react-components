@@ -11,23 +11,13 @@ import AppContext from 'store/AppContex';
 
 import { charactersLink } from '../../constants/API';
 
-import { TCharacters } from './interfaces';
-
 const Home = () => {
   const { state, dispatch } = useContext(AppContext);
-  const storageData = localStorage.getItem('characters') || '';
-  const [characters, setCharacters] = useState<TCharacters>(
-    storageData ? JSON.parse(storageData) : []
-  );
   const [isLoading, setLoadingState] = useState(false);
-  const isResponseEmpty = !!localStorage.getItem('isFirstLoad');
 
   useEffect(() => {
-    if (!characters.length && !isResponseEmpty) {
-      getData();
-      localStorage.setItem('isFirstLoad', `true`);
-    }
-  }, [isResponseEmpty, characters]);
+    !state.cards.length && getData();
+  }, []);
 
   const getData = (value?: string) => {
     setLoadingState(true);
@@ -36,19 +26,14 @@ const Home = () => {
       .get(url)
       .then((response) => {
         const { results } = response.data;
-        setCharacters(results);
         dispatch({ type: 'loading', payload: results });
-        localStorage.setItem('characters', JSON.stringify(results));
       })
       .catch((error) => {
         console.warn(error);
-        setCharacters([]);
         dispatch({ type: 'loading', payload: [] });
-        localStorage.setItem('characters', '');
       })
       .finally(() => {
         setLoadingState(false);
-        console.log(state);
       });
   };
 
@@ -62,7 +47,7 @@ const Home = () => {
   return (
     <main className="main" data-testid={'home'}>
       <SearchBar handleSearch={handleSearch} />
-      {isLoading ? <Spinner /> : <CardList data={characters} />}
+      {isLoading ? <Spinner /> : <CardList data={state.cards} />}
     </main>
   );
 };
