@@ -23,3 +23,24 @@ export interface IFormItem {
   >;
   register: (id: string, type?: string) => UseFormRegisterReturn<string>;
 }
+
+export interface ICaracter {
+  id: number;
+  name: string;
+  status: string;
+  species: string;
+  type: string;
+  gender: string;
+  origin: {
+    name: string;
+    url: string;
+  };
+  location: {
+    name: string;
+    url: string;
+  };
+  image: string;
+  episode: string[];
+  url: string;
+  created: string;
+}
