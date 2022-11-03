@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, FormEvent } from 'react';
 import axios from 'axios';
 
 import Spinner from '../../components/Spinner';
-import SearchBar from '../../components/SearchBar';
+import CardsForm from '../../components/CardsForm';
 import CardList from '../../components/CardList';
 
 import './index.css';
@@ -12,27 +12,43 @@ import AppContext from 'store/AppContex';
 import { charactersLink } from '../../constants/API';
 
 const Home = () => {
-  const { state, dispatch } = useContext(AppContext);
+  const {
+    state: { cards, currentPage, pages, isLoaded },
+    dispatch,
+  } = useContext(AppContext);
   const [isLoading, setLoadingState] = useState(false);
 
   useEffect(() => {
-    !state.cards.length && getData();
-  }, []);
+    !isLoaded && getData();
+  });
 
-  const getData = (value?: string) => {
+  const getData = (page = 1, value?: string) => {
     setLoadingState(true);
-    const url = value ? `${charactersLink}?name=${value}` : charactersLink;
+    const action = {
+      type: 'loading',
+      payload: {
+        cards: [],
+        currentPage: 0,
+        pages: 0,
+        isLoaded: true,
+      },
+    };
+    // const url = value ? `${charactersLink}?name=${value}` : charactersLink;
+    const url = `${charactersLink}/?page=${page}`;
     axios
       .get(url)
       .then((response) => {
-        const { results } = response.data;
-        dispatch({ type: 'loading', payload: results });
+        const { results, info } = response.data;
+        action.payload = {
+          ...action.payload,
+          cards: results,
+          currentPage: page,
+          pages: info.pages,
+        };
       })
-      .catch((error) => {
-        console.warn(error);
-        dispatch({ type: 'loading', payload: [] });
-      })
+      .catch((error) => console.warn(error))
       .finally(() => {
+        dispatch(action);
         setLoadingState(false);
       });
   };
@@ -44,10 +60,29 @@ const Home = () => {
     getData(value);
   };
 
+  const getPrevPage = () => getData(currentPage - 1);
+
+  const getNextPage = () => getData(currentPage + 1);
+
   return (
     <main className="main" data-testid={'home'}>
-      <SearchBar handleSearch={handleSearch} />
-      {isLoading ? <Spinner /> : <CardList data={state.cards} />}
+      <CardsForm handleSearch={handleSearch} />
+      <span className="pagination">
+        {isLoaded && (
+          <>
+            <button aria-label="Previous" onClick={getPrevPage} disabled={currentPage - 1 === 0}>
+              Prev
+            </button>
+            <p>
+              {currentPage} / {pages}
+            </p>
+            <button aria-label="Next" onClick={getNextPage} disabled={currentPage + 1 > pages}>
+              Next
+            </button>
+          </>
+        )}
+      </span>
+      {isLoading ? <Spinner /> : <CardList data={cards} isLoaded={isLoaded} />}
     </main>
   );
 };

@@ -60,7 +60,7 @@ const Form = ({ data, addCard }: IProps) => {
     !isChecked ? checked : unchecked;
 
   return (
-    <form className="form" onSubmit={handleSubmit(onSubmit)} data-testid="react-form">
+    <form className="custom-cards-form" onSubmit={handleSubmit(onSubmit)} data-testid="react-form">
       {data.map((data, i) => (
         <FormItem key={i} data={data} errors={errors} register={setRegister} />
       ))}

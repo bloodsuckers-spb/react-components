@@ -6,6 +6,7 @@ import { IFormItem } from '../../types';
 
 const FormInput = ({ data, errors, register }: IFormItem) => {
   const { id, placeholder, className, title, type, errorMessage } = data;
+  const confirmMessage = 'Please confirm your personal data';
   return (
     <fieldset className={`fieldset-${className}`}>
       <legend>{title}</legend>
@@ -19,9 +20,7 @@ const FormInput = ({ data, errors, register }: IFormItem) => {
           {...register(id, type)}
         />
         {type === 'checkbox' && (
-          <span className={className}>
-            {id === 'confirm' && 'Please confirm your personal data'}
-          </span>
+          <span className={className}>{id === 'confirm' && confirmMessage}</span>
         )}
       </label>
       {errors[id] && <p className="error">{errorMessage}</p>}

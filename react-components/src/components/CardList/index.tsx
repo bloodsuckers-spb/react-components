@@ -7,9 +7,10 @@ import './index.css';
 
 import { IProps, TCardId } from 'components/CardList/interfaces';
 
-const CardList = ({ data }: IProps) => {
+const CardList = ({ data, isLoaded }: IProps) => {
   const [isModalOpen, setModalState] = useState(false);
   const [cardId, setCardId] = useState<TCardId>(null);
+  const message = isLoaded ? 'Sorry, There is nothing found' : '';
 
   const openModal = (cardId: number) => {
     setModalState(true);
@@ -21,7 +22,7 @@ const CardList = ({ data }: IProps) => {
   return !isModalOpen || cardId === null ? (
     <ul className="card-list" role="card-list">
       {!data.length
-        ? 'Sorry, There is nothing found'
+        ? message
         : data.map((card, i) => (
             <li key={i}>
               <Card id={i} data={card} handler={openModal} />

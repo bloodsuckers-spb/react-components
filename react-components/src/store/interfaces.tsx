@@ -3,11 +3,19 @@ import { ICaracter } from '../types';
 
 export type StoreStateType = {
   cards: ICaracter[];
+  currentPage: number;
+  pages: number;
+  isLoaded: boolean;
 };
 
 export type ActionType = {
   type: string;
-  payload: ICaracter[];
+  payload: {
+    cards: ICaracter[];
+    currentPage: number;
+    pages: number;
+    isLoaded: boolean;
+  };
 };
 
 export type CreateContextProps = {
