@@ -1,3 +1,17 @@
 .cards-form {
+    position: relative;
     padding-bottom: 30px;
+}
+
+.options {
+    position: absolute;
+    top: 30px;
+    left: 70px;
+    width: 70px;
+}
+
+aside {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #000;
 }

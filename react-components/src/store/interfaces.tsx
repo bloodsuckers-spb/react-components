@@ -6,6 +6,7 @@ export type StoreStateType = {
   currentPage: number;
   pages: number;
   isLoaded: boolean;
+  name: string;
 };
 
 export type ActionType = {
@@ -15,6 +16,7 @@ export type ActionType = {
     currentPage: number;
     pages: number;
     isLoaded: boolean;
+    name: string;
   };
 };
 

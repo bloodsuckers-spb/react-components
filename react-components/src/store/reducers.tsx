@@ -5,8 +5,9 @@ export const cardsReducer = (state: StoreStateType, action: ActionType) => {
     case 'loading':
       const { cards, currentPage, pages } = action.payload;
       return { ...state, cards: cards, currentPage: currentPage, pages: pages, isLoaded: true };
-    case 'sorting':
-      return { ...state };
+    case 'changeOptions':
+      const { name } = action.payload;
+      return { ...state, name: name };
     default:
       return { ...state };
   }
