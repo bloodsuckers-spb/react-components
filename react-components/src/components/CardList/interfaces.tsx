@@ -1,8 +1,6 @@
 import { ICaracter } from 'pages/Home/interfaces';
 
-export interface IProps {
+export type Props = {
   data: ICaracter[];
   isLoaded: boolean;
-}
-
-export type TCardId = number | null;
+};

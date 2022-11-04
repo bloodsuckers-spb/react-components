@@ -1,36 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import Card from 'components/Card';
-import Modal from 'components/Modal';
 
 import './index.css';
 
-import { IProps, TCardId } from 'components/CardList/interfaces';
+import { Props } from './interfaces';
 
-const CardList = ({ data, isLoaded }: IProps) => {
-  const [isModalOpen, setModalState] = useState(false);
-  const [cardId, setCardId] = useState<TCardId>(null);
+const CardList = ({ data, isLoaded }: Props) => {
   const message = isLoaded ? 'Sorry, There is nothing found' : '';
-
-  const openModal = (cardId: number) => {
-    setModalState(true);
-    setCardId(cardId);
-  };
-
-  const closeModal = () => setModalState(false);
-
-  return !isModalOpen || cardId === null ? (
+  return (
     <ul className="card-list" role="card-list">
       {!data.length
         ? message
         : data.map((card, i) => (
             <li key={i}>
-              <Card id={i} data={card} />
+              <Link to="character" state={card}>
+                <Card data={card} />
+              </Link>
             </li>
           ))}
     </ul>
-  ) : (
-    <Modal openModalHandler={closeModal} card={data[cardId]} />
   );
 };
 
