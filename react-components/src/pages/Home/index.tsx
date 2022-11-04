@@ -7,6 +7,7 @@ import CardList from '../../components/CardList';
 
 import './index.css';
 
+import { load } from '../../store/actions';
 import AppContext from 'store/AppContex';
 
 import { charactersLink } from '../../constants/API';
@@ -20,30 +21,24 @@ const Home = () => {
 
   useEffect(() => {
     !isLoaded && getData();
-  });
+  }, []);
 
-  const getData = (page = 1) => {
-    const payload = {
-      cards: [],
-      currentPage: page,
-      pages: 0,
-      name: name,
-      isLoaded: true,
-    };
+  const getData = (currentPage = 1) => {
     setLoadingState(true);
     axios
-      .get(`${charactersLink}/?page=${page}&name=${name}`)
+      .get(`${charactersLink}/?page=${currentPage}&name=${name}`)
       .then((response) => {
-        const { results, info } = response.data;
-        payload.cards = results;
-        payload.pages = info.pages;
+        const {
+          results: cards,
+          info: { pages },
+        } = response.data;
+        dispatch(load(cards, pages, currentPage));
       })
       .catch((error) => {
         console.warn(error);
-        payload.currentPage = 0;
+        dispatch(load());
       })
       .finally(() => {
-        dispatch({ type: 'loading', payload });
         setLoadingState(false);
       });
   };

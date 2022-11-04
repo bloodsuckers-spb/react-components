@@ -1,13 +1,17 @@
 import { StoreStateType, ActionType } from './interfaces';
 
 export const cardsReducer = (state: StoreStateType, action: ActionType) => {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case 'loading':
-      const { cards, currentPage, pages } = action.payload;
-      return { ...state, cards: cards, currentPage: currentPage, pages: pages, isLoaded: true };
+      const { cards, currentPage, pages } = payload;
+      return { ...state, cards, currentPage, pages, isLoaded: true };
     case 'changeOptions':
-      const { name } = action.payload;
-      return { ...state, name: name };
+      const { name } = payload;
+      return { ...state, name };
+    case 'selectSorting':
+      const { sortingBy } = payload;
+      return { ...state, sortingBy };
     default:
       return { ...state };
   }

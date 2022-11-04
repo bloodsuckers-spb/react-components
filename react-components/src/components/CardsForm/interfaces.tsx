@@ -1,7 +1,3 @@
-import { ChangeEvent } from 'react';
-
-export interface IProps {
+export type Props = {
   getData: () => void;
-}
-
-export type TSearchBarChange = ChangeEvent<HTMLInputElement>;
+};

@@ -5,19 +5,14 @@ export type StoreStateType = {
   cards: ICaracter[];
   currentPage: number;
   pages: number;
-  isLoaded: boolean;
   name: string;
+  isLoaded: boolean;
+  sortingBy?: string;
 };
 
 export type ActionType = {
   type: string;
-  payload: {
-    cards: ICaracter[];
-    currentPage: number;
-    pages: number;
-    isLoaded: boolean;
-    name: string;
-  };
+  payload: StoreStateType;
 };
 
 export type CreateContextProps = {

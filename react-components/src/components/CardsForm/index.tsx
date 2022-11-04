@@ -1,18 +1,28 @@
 import React, { useContext, ChangeEvent, FormEvent } from 'react';
 
+import { selectSorting, changeOptions } from 'store/actions';
+
 import './index.css';
 
 import AppContext from 'store/AppContex';
 
-import { IProps } from './interfaces';
+import { Props } from './interfaces';
 
-const CardsForm = ({ getData }: IProps) => {
-  const { state, dispatch } = useContext(AppContext);
+const CardsForm = ({ getData }: Props) => {
+  const {
+    state: { name, sortingBy },
+    dispatch,
+  } = useContext(AppContext);
 
   const onChange = ({ currentTarget }: ChangeEvent) => {
     if (currentTarget instanceof HTMLInputElement) {
-      const { value } = currentTarget;
-      dispatch({ type: 'changeOptions', payload: { ...state, name: value } });
+      dispatch(changeOptions(currentTarget.value));
+    }
+  };
+
+  const onSelect = ({ currentTarget }: ChangeEvent) => {
+    if (currentTarget instanceof HTMLSelectElement) {
+      dispatch(selectSorting(currentTarget.value));
     }
   };
 
@@ -30,15 +40,14 @@ const CardsForm = ({ getData }: IProps) => {
           placeholder="Search"
           autoComplete="off"
           autoFocus={true}
-          defaultValue={state.name}
+          defaultValue={name}
           onChange={onChange}
         />
       </label>
       <button type="submit">Search</button>
-      <select>
-        <option>alive</option>
-        <option>dead</option>
-        <option>unknown</option>
+      <select defaultValue={sortingBy} onChange={onSelect}>
+        <option>By name</option>
+        <option>By date</option>
       </select>
     </form>
   );
