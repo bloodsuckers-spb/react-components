@@ -48,6 +48,7 @@ const CardsForm = ({ getData }: Props) => {
       <select defaultValue={sortingBy} onChange={onSelect}>
         <option>By name</option>
         <option>By date</option>
+        <option>By reverse-name</option>
       </select>
     </form>
   );

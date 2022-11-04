@@ -14,7 +14,7 @@ import { charactersLink } from '../../constants/API';
 
 const Home = () => {
   const {
-    state: { cards, currentPage, pages, isLoaded, name },
+    state: { cards, currentPage, pages, isLoaded, name, sortingBy },
     dispatch,
   } = useContext(AppContext);
   const [isLoading, setLoadingState] = useState(false);
@@ -32,7 +32,7 @@ const Home = () => {
           results: cards,
           info: { pages },
         } = response.data;
-        dispatch(load(cards, pages, currentPage));
+        dispatch(load(cards, pages, currentPage, sortingBy));
       })
       .catch((error) => {
         console.warn(error);

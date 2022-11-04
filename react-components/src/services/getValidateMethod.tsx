@@ -1,4 +1,4 @@
-import { TimeStamp } from './interfaces';
+import { TimeStamp } from '../types';
 
 const getValidateMethod = (id: string, type?: string) => {
   const isTextInputValid = (value: string) => /^[A-Z][a-z]+|[А-Я][а-я]{2,10}$/.test(value);

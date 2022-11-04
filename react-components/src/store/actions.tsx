@@ -18,13 +18,14 @@ export const changeOptions = (value: string) => ({
   },
 });
 
-export const load = (cards: ICaracter[] = [], pages = 0, currentPage = 0) => ({
+export const load = (cards: ICaracter[] = [], pages = 0, currentPage = 0, sortingBy = '') => ({
   type: 'loading',
   payload: {
     ...initialState,
     cards,
     pages,
     currentPage,
+    sortingBy,
     isLoaded: true,
   },
 });

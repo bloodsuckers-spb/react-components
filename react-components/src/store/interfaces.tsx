@@ -7,7 +7,7 @@ export type StoreStateType = {
   pages: number;
   name: string;
   isLoaded: boolean;
-  sortingBy?: string;
+  sortingBy: string;
 };
 
 export type ActionType = {

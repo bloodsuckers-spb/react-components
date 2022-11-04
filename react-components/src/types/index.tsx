@@ -44,3 +44,5 @@ export interface ICaracter {
   url: string;
   created: string;
 }
+
+export type TimeStamp = string | number;
