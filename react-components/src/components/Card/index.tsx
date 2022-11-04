@@ -1,18 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import './index.css';
 
-import { IProps } from './interfaces';
+import { Props } from './interfaces';
 
-const Card = ({ data: { image, name, gender, species }, handler, id }: IProps) => {
-  const handleClick = () => handler(id);
+const Card = ({ data: { image, name, gender, species }, id }: Props) => {
   return (
-    <div className="card" onClick={handleClick} role="card">
-      <img className="card-img" src={image} />
-      <h4>{name}</h4>
-      <p className="gender">{gender}</p>
-      <p>{species}</p>
-    </div>
+    <Link to="character" state={{ id }}>
+      <div className="card" role="card">
+        <img className="card-img" src={image} />
+        <h4>{name}</h4>
+        <p className="gender">{gender}</p>
+        <p>{species}</p>
+      </div>
+    </Link>
   );
 };
 

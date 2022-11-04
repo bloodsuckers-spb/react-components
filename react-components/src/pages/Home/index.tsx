@@ -23,7 +23,6 @@ const Home = () => {
   });
 
   const getData = (page = 1) => {
-    const url = `${charactersLink}/?page=${page}&name=${name}`;
     const payload = {
       cards: [],
       currentPage: page,
@@ -33,7 +32,7 @@ const Home = () => {
     };
     setLoadingState(true);
     axios
-      .get(url)
+      .get(`${charactersLink}/?page=${page}&name=${name}`)
       .then((response) => {
         const { results, info } = response.data;
         payload.cards = results;

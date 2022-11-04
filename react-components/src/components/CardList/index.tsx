@@ -25,7 +25,7 @@ const CardList = ({ data, isLoaded }: IProps) => {
         ? message
         : data.map((card, i) => (
             <li key={i}>
-              <Card id={i} data={card} handler={openModal} />
+              <Card id={i} data={card} />
             </li>
           ))}
     </ul>

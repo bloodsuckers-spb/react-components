@@ -1,7 +1,6 @@
 import { ICaracter } from 'pages/Home/interfaces';
 
-export interface IProps {
+export type Props = {
   data: ICaracter;
   id: number;
-  handler: (id: number) => void;
-}
+};
