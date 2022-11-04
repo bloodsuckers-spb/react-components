@@ -15,7 +15,7 @@ const CardList = ({ data, isLoaded }: Props) => {
         ? message
         : data.map((card, i) => (
             <li key={i}>
-              <Link to="character" state={card}>
+              <Link className="link" to="character" state={card}>
                 <Card data={card} />
               </Link>
             </li>

@@ -35,3 +35,8 @@ ul {
 li {
   list-style: none;
 }
+
+.link {
+  color: black;
+  text-decoration: none;
+}
