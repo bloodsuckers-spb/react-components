@@ -7,7 +7,6 @@ export const cardsReducer = (state: StoreStateType, action: ActionType) => {
   switch (type) {
     case 'loading':
       const { cards, currentPage, pages, sortingBy } = payload;
-      console.log(sortingBy);
       if (sortingBy === 'By date') cards.sort(SortingService.sortingByDate);
       if (sortingBy === 'By reverse-name') cards.sort(SortingService.sortingByNameReverse);
       return { ...state, cards, currentPage, pages, isLoaded: true };
@@ -20,6 +19,9 @@ export const cardsReducer = (state: StoreStateType, action: ActionType) => {
       if (payload.sortingBy === 'By date') array.sort(SortingService.sortingByDate);
       if (payload.sortingBy === 'By reverse-name') array.sort(SortingService.sortingByNameReverse);
       return { ...state, cards: array, sortingBy: payload.sortingBy };
+    case 'addCards':
+      const { customCards } = payload;
+      return { ...state, customCards };
     default:
       return { ...state };
   }

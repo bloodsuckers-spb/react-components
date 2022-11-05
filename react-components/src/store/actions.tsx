@@ -1,6 +1,6 @@
 import { initialState } from './constants';
 
-import { ICaracter } from '../types';
+import { ICaracter, IFormCards } from '../types';
 
 export const selectSorting = (value: string) => ({
   type: 'selectSorting',
@@ -27,5 +27,13 @@ export const load = (cards: ICaracter[] = [], pages = 0, currentPage = 0, sortin
     currentPage,
     sortingBy,
     isLoaded: true,
+  },
+});
+
+export const addCards = (customCards: IFormCards[]) => ({
+  type: 'addCards',
+  payload: {
+    ...initialState,
+    customCards,
   },
 });

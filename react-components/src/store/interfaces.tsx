@@ -1,8 +1,9 @@
 import { Dispatch } from 'react';
-import { ICaracter } from '../types';
+import { ICaracter, IFormCards } from '../types';
 
 export type StoreStateType = {
   cards: ICaracter[];
+  customCards: IFormCards[];
   currentPage: number;
   pages: number;
   name: string;

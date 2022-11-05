@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 
 import FormCardList from 'components/FormCardList';
 import Form from 'components/Form';
 
 import './index.css';
 
+import { addCards } from '../../store/actions';
+
+import AppContext from 'store/AppContex';
+
 import formData from '../../constants/formData';
 
-import { TCards } from './interfaces';
 import { IFormCards } from '../../types';
 
 const Forms = () => {
-  const [cards, setCards] = useState<TCards>([]);
+  const {
+    state: { customCards },
+    dispatch,
+  } = useContext(AppContext);
 
-  const addCard = (data: IFormCards) => setCards((cards) => [...cards, data]);
+  const addCard = (card: IFormCards) => dispatch(addCards([...customCards, card]));
 
   return (
     <main className="main">
       <Form data={formData} addCard={addCard} />
-      {!!cards.length && <FormCardList data={cards} />}
+      {!!customCards.length && <FormCardList data={customCards} />}
     </main>
   );
 };
