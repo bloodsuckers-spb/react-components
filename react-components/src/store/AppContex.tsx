@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { initialState } from './constants';
+import { initialState } from './initialState';
 
 import { CreateContextProps } from './interfaces';
 

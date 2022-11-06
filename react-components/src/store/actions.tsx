@@ -1,4 +1,4 @@
-import { initialState } from './constants';
+import { initialState } from './initialState';
 
 import { ICaracter, IFormCards } from '../types';
 
