@@ -12,8 +12,11 @@ import { routes } from './constants/routes';
 import { initialState } from './store/constants';
 import { cardsReducer } from './store/reducers';
 
+import { FormProvider, useForm } from 'react-hook-form';
+
 const App = () => {
   const [cards, dispatchCards] = useReducer(cardsReducer, initialState);
+  const methods = useForm();
 
   const value = {
     state: cards,
@@ -22,10 +25,12 @@ const App = () => {
 
   return (
     <AppContext.Provider value={value}>
-      <BrowserRouter>
-        <AppHeader />
-        <AppRoutes routes={routes} />
-      </BrowserRouter>
+      <FormProvider {...methods}>
+        <BrowserRouter>
+          <AppHeader />
+          <AppRoutes routes={routes} />
+        </BrowserRouter>
+      </FormProvider>
     </AppContext.Provider>
   );
 };

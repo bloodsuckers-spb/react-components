@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 
 import FormItem from 'components/FormItem';
 import getValidateMethod from '../../services/getValidateMethod';
 
 import './index.css';
 
-import { IProps, IFormItems, ISubmit } from './interfaces';
+import { useFormContext } from 'react-hook-form';
+
+import { IProps, ISubmit } from './interfaces';
 
 const Form = ({ data, addCard }: IProps) => {
   const [isDisabled, setBtnState] = useState(true);
@@ -18,7 +19,7 @@ const Form = ({ data, addCard }: IProps) => {
     reset,
     resetField,
     formState: { errors, isDirty, isValid, isSubmitted, isSubmitSuccessful },
-  } = useForm<IFormItems>();
+  } = useFormContext();
 
   useEffect(() => {
     if (!isSubmitted && isDirty) {
