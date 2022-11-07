@@ -13,9 +13,7 @@ import { IProps, ISubmit } from './interfaces';
 
 const Form = ({ data, addCard }: IProps) => {
   const {
-    state: {
-      formState: { isDisabled, isCardAdded },
-    },
+    state: { formState },
     dispatch,
   } = useContext(AppContext);
 
@@ -39,8 +37,8 @@ const Form = ({ data, addCard }: IProps) => {
     if (isValid) {
       dispatch(
         updateFormState({
+          ...formState,
           isDisabled: false,
-          isCardAdded: isCardAdded,
         })
       );
     }
@@ -50,7 +48,7 @@ const Form = ({ data, addCard }: IProps) => {
     if (isSubmitSuccessful) {
       dispatch(
         updateFormState({
-          isDisabled: isDisabled,
+          ...formState,
           isCardAdded: true,
         })
       );
@@ -60,8 +58,8 @@ const Form = ({ data, addCard }: IProps) => {
     }
     dispatch(
       updateFormState({
+        ...formState,
         isDisabled: true,
-        isCardAdded: isCardAdded,
       })
     );
   }, [isSubmitted, isSubmitSuccessful, reset, resetField]);
@@ -90,8 +88,8 @@ const Form = ({ data, addCard }: IProps) => {
       {data.map((data, i) => (
         <FormItem key={i} data={data} errors={errors} register={setRegister} />
       ))}
-      <input className="submit" type="submit" value="submit" disabled={isDisabled} />
-      {isCardAdded && <p className="confirm-message">The data has been saved</p>}
+      <input className="submit" type="submit" value="submit" disabled={formState.isDisabled} />
+      {formState.isCardAdded && <p className="confirm-message">The data has been saved</p>}
     </form>
   );
 };
