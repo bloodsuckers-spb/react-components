@@ -1,6 +1,7 @@
 import { initialState } from './initialState';
 
 import { ICaracter, IFormCards } from '../types';
+import { FormState } from '../store/interfaces';
 
 export const selectSorting = (value: string) => ({
   type: 'selectSorting',
@@ -35,5 +36,13 @@ export const addCards = (customCards: IFormCards[]) => ({
   payload: {
     ...initialState,
     customCards,
+  },
+});
+
+export const updateFormState = (formState: FormState) => ({
+  type: 'updateForm',
+  payload: {
+    ...initialState,
+    formState,
   },
 });

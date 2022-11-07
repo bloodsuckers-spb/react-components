@@ -9,11 +9,17 @@ export type StoreStateType = {
   name: string;
   isLoaded: boolean;
   sortingBy: string;
+  formState: FormState;
 };
 
 export type ActionType = {
   type: string;
   payload: StoreStateType;
+};
+
+export type FormState = {
+  isDisabled: boolean;
+  isCardAdded: boolean;
 };
 
 export type CreateContextProps = {

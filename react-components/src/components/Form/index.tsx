@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import FormItem from 'components/FormItem';
 import getValidateMethod from '../../services/getValidateMethod';
@@ -6,12 +6,18 @@ import getValidateMethod from '../../services/getValidateMethod';
 import './index.css';
 
 import { useFormContext } from 'react-hook-form';
+import { updateFormState } from '../../store/actions';
+import AppContext from '../../store/AppContex';
 
 import { IProps, ISubmit } from './interfaces';
 
 const Form = ({ data, addCard }: IProps) => {
-  const [isDisabled, setBtnState] = useState(true);
-  const [isCardAdded, setCardState] = useState(false);
+  const {
+    state: {
+      formState: { isDisabled, isCardAdded },
+    },
+    dispatch,
+  } = useContext(AppContext);
 
   const {
     register,
@@ -23,23 +29,42 @@ const Form = ({ data, addCard }: IProps) => {
 
   useEffect(() => {
     if (!isSubmitted && isDirty) {
-      setBtnState(false);
-      setCardState(false);
+      dispatch(
+        updateFormState({
+          isDisabled: false,
+          isCardAdded: false,
+        })
+      );
     }
     if (isValid) {
-      setBtnState(false);
+      dispatch(
+        updateFormState({
+          isDisabled: false,
+          isCardAdded: isCardAdded,
+        })
+      );
     }
   }, [isDirty, isSubmitted, isValid]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      setCardState(true);
+      dispatch(
+        updateFormState({
+          isDisabled: isDisabled,
+          isCardAdded: true,
+        })
+      );
       resetField('confirm');
       resetField('switcher');
       reset();
     }
-    setBtnState(true);
-  }, [isSubmitSuccessful, reset, resetField]);
+    dispatch(
+      updateFormState({
+        isDisabled: true,
+        isCardAdded: isCardAdded,
+      })
+    );
+  }, [isSubmitted, isSubmitSuccessful, reset, resetField]);
 
   const onSubmit = (data: ISubmit) => {
     const file = data.profilePic[0];
