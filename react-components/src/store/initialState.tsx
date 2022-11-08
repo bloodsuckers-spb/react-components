@@ -6,8 +6,4 @@ export const initialState = {
   name: '',
   sortingBy: 'By date',
   isLoaded: false,
-  formState: {
-    isDisabled: true,
-    isCardAdded: false,
-  },
 };

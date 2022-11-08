@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import FormItem from 'components/FormItem';
 import getValidateMethod from '../../services/getValidateMethod';
@@ -6,16 +6,12 @@ import getValidateMethod from '../../services/getValidateMethod';
 import './index.css';
 
 import { useFormContext } from 'react-hook-form';
-import { updateFormState } from '../../store/actions';
-import AppContext from '../../store/AppContex';
 
 import { IProps, ISubmit } from './interfaces';
 
 const Form = ({ data, addCard }: IProps) => {
-  const {
-    state: { formState },
-    dispatch,
-  } = useContext(AppContext);
+  const [isDisabled, setBtnState] = useState(true);
+  const [isCardAdded, setCardState] = useState(false);
 
   const {
     register,
@@ -27,42 +23,23 @@ const Form = ({ data, addCard }: IProps) => {
 
   useEffect(() => {
     if (!isSubmitted && isDirty) {
-      dispatch(
-        updateFormState({
-          isDisabled: false,
-          isCardAdded: false,
-        })
-      );
+      setBtnState(false);
+      setCardState(false);
     }
     if (isValid) {
-      dispatch(
-        updateFormState({
-          ...formState,
-          isDisabled: false,
-        })
-      );
+      setBtnState(false);
     }
-  }, [isDirty, isSubmitted, isValid]);
+  }, [isSubmitted, isDirty, isValid]);
 
   useEffect(() => {
     if (isSubmitSuccessful) {
-      dispatch(
-        updateFormState({
-          ...formState,
-          isCardAdded: true,
-        })
-      );
+      setCardState(true);
       resetField('confirm');
       resetField('switcher');
       reset();
     }
-    dispatch(
-      updateFormState({
-        ...formState,
-        isDisabled: true,
-      })
-    );
-  }, [isSubmitted, isSubmitSuccessful, reset, resetField]);
+    setBtnState(true);
+  }, [isSubmitSuccessful, reset, resetField]);
 
   const onSubmit = (data: ISubmit) => {
     const file = data.profilePic[0];
@@ -88,8 +65,8 @@ const Form = ({ data, addCard }: IProps) => {
       {data.map((data, i) => (
         <FormItem key={i} data={data} errors={errors} register={setRegister} />
       ))}
-      <input className="submit" type="submit" value="submit" disabled={formState.isDisabled} />
-      {formState.isCardAdded && <p className="confirm-message">The data has been saved</p>}
+      <input className="submit" type="submit" value="submit" disabled={isDisabled} />
+      {isCardAdded && <p className="confirm-message">The data has been saved</p>}
     </form>
   );
 };

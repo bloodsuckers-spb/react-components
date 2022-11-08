@@ -22,9 +22,6 @@ export const cardsReducer = (state: StoreStateType, action: ActionType) => {
     case 'addCards':
       const { customCards } = payload;
       return { ...state, customCards };
-    case 'updateForm':
-      const { formState } = payload;
-      return { ...state, formState };
     default:
       return { ...state };
   }
