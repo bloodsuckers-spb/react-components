@@ -9,6 +9,8 @@ export type StoreStateType = {
   name: string;
   isLoaded: boolean;
   sortingBy: string;
+  isDisabled: boolean;
+  isCardAdded: boolean;
 };
 
 export type ActionType = {

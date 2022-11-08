@@ -22,6 +22,14 @@ export const cardsReducer = (state: StoreStateType, action: ActionType) => {
     case 'addCards':
       const { customCards } = payload;
       return { ...state, customCards };
+    case 'setBtnState':
+      const { isDisabled } = payload;
+      return { ...state, isDisabled };
+    case 'setCardState':
+      const { isCardAdded } = payload;
+      return { ...state, isCardAdded };
+    case 'updateFormState':
+      return { ...state, isCardAdded: payload.isCardAdded, isDisabled: payload.isDisabled };
     default:
       return { ...state };
   }

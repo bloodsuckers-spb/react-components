@@ -37,3 +37,28 @@ export const addCards = (customCards: IFormCards[]) => ({
     customCards,
   },
 });
+
+export const setBtnState = (value: boolean) => ({
+  type: 'setBtnState',
+  payload: {
+    ...initialState,
+    isDisabled: value,
+  },
+});
+
+export const setCardState = (value: boolean) => ({
+  type: 'setCardState',
+  payload: {
+    ...initialState,
+    isCardAdded: value,
+  },
+});
+
+export const updateFormState = (cardStatus: boolean, btnStatus: boolean) => ({
+  type: 'updateFormState',
+  payload: {
+    ...initialState,
+    isCardAdded: cardStatus,
+    isDisabled: btnStatus,
+  },
+});

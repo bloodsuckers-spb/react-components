@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import FormItem from 'components/FormItem';
 import getValidateMethod from '../../services/getValidateMethod';
@@ -6,12 +6,16 @@ import getValidateMethod from '../../services/getValidateMethod';
 import './index.css';
 
 import { useFormContext } from 'react-hook-form';
+import AppContext from 'store/AppContex';
+import { setBtnState, setCardState, updateFormState } from '../../store/actions';
 
 import { IProps, ISubmit } from './interfaces';
 
 const Form = ({ data, addCard }: IProps) => {
-  const [isDisabled, setBtnState] = useState(true);
-  const [isCardAdded, setCardState] = useState(false);
+  const {
+    state: { isDisabled, isCardAdded },
+    dispatch,
+  } = useContext(AppContext);
 
   const {
     register,
@@ -23,25 +27,23 @@ const Form = ({ data, addCard }: IProps) => {
 
   useEffect(() => {
     if (!isSubmitted && isDirty) {
-      setBtnState(false);
-      setCardState(false);
+      dispatch(updateFormState(false, false));
     }
     if (isValid) {
-      setBtnState(false);
+      dispatch(setBtnState(false));
     }
   }, [isSubmitted, isDirty, isValid]);
 
   useEffect(() => {
     if (isSubmitted) {
-      setBtnState(true);
+      dispatch(setBtnState(true));
     }
     if (isSubmitSuccessful) {
-      setCardState(true);
+      dispatch(setCardState(true));
       resetField('confirm');
       resetField('switcher');
       reset();
     }
-    setBtnState(true);
   }, [isSubmitSuccessful, isSubmitted, reset, resetField]);
 
   const onSubmit = (data: ISubmit) => {

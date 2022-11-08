@@ -6,4 +6,6 @@ export const initialState = {
   name: '',
   sortingBy: 'By date',
   isLoaded: false,
+  isDisabled: true,
+  isCardAdded: false,
 };
