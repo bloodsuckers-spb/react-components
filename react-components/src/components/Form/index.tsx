@@ -32,6 +32,9 @@ const Form = ({ data, addCard }: IProps) => {
   }, [isSubmitted, isDirty, isValid]);
 
   useEffect(() => {
+    if (isSubmitted) {
+      setBtnState(true);
+    }
     if (isSubmitSuccessful) {
       setCardState(true);
       resetField('confirm');
@@ -39,7 +42,7 @@ const Form = ({ data, addCard }: IProps) => {
       reset();
     }
     setBtnState(true);
-  }, [isSubmitSuccessful, reset, resetField]);
+  }, [isSubmitSuccessful, isSubmitted, reset, resetField]);
 
   const onSubmit = (data: ISubmit) => {
     const file = data.profilePic[0];
