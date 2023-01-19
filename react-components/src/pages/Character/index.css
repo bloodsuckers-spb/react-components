@@ -1,0 +1,31 @@
+.escape {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100px;
+  width: 140px;
+  height: 40px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #fff;
+  background-color: rgb(90, 82, 142);
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0 0 15px 4px rgb(0 0 0 / 20%);
+  transition: all 0.3s ease 0s;
+  outline: none;
+  transition: all 0.5s;
+  text-decoration: none;
+}
+
+.escape:not(:disabled):hover {
+  cursor: pointer;
+  background-color: rgb(1, 1, 1);
+  color: #fff;
+}

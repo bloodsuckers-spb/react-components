@@ -1,0 +1,51 @@
+.custom-cards-form {
+  padding: 10px;
+  border-radius: 20px;
+  width: 280px;
+  font-weight: bolder;
+  border: 1px solid #000;
+  box-shadow: 0px 0px 10px #282c34;
+  height: 730px;
+}
+
+.submit {
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+  margin-top: 10px;
+  width: 100px;
+  width: 140px;
+  height: 40px;
+  font-family: 'Roboto', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #fff;
+  background-color: rgb(90, 82, 142);
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0 0 15px 4px rgb(0 0 0 / 20%);
+  transition: all 0.3s ease 0s;
+  outline: none;
+  transition: all 0.5s;
+}
+
+.submit:not(:disabled):hover {
+  cursor: pointer;
+  background-color: rgb(1, 1, 1);
+  color: #fff;
+}
+
+.submit:disabled {
+  cursor: default;
+  border: 1px solid black;
+  background-color: #fff;
+  color: #000;
+}
+
+.confirm-message {
+  margin-top: 10px;
+  text-align: center;
+  color: rgb(17, 235, 90);
+}

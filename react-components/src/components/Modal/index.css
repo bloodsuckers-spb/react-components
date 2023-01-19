@@ -1,0 +1,69 @@
+.modal {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #000000;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(41, 41, 41, 0.6);
+  position: fixed;
+  animation-duration: 0.55s;
+  animation-fill-mode: both;
+  animation-name: fadeInDown;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-window {
+  position: absolute;
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  z-index: 3;
+  animation-duration: 0.55s;
+  animation-fill-mode: both;
+  animation-name: fadeInDown;
+  padding: 10px;
+  width: 270px;
+  min-height: 434px;
+  border-radius: 10px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-close-icon {
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+  top: -25px;
+  left: 270px;
+  width: 20px;
+  height: 20px;
+  background: url('./cross.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.modal-close-icon:hover {
+  transform: scale(110%);
+  transition: all 0.3s;
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0px -100% 0px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}

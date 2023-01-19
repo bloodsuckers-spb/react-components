@@ -1,0 +1,20 @@
+.nav__link {
+    text-decoration: none;
+    color: #cdcdcd;
+  }
+  
+  .nav__link:visited {
+    color: #cdcdcd;
+  }
+  .nav__link:hover {
+    color: #fafafa;
+  }
+
+  .nav__link:active {
+    color: #fafafa;
+  }
+  
+  .nav__link.active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }

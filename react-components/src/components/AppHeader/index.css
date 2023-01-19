@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  min-height: 30px;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.title {
+  font-size: 16px;
+  color: #fff;
+}
